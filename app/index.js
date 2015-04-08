@@ -2,60 +2,42 @@
 var yeoman = require('yeoman-generator');
 var chalk = require('chalk');
 var yosay = require('yosay');
+var eol = require('os').EOL;
 
-module.exports = yeoman.generators.Base.extend({
-  initializing: function () {
+var Generator = yeoman.generators.Base.extend({
+
+  constructor: function () {
+    yeoman.generators.Base.apply(this, arguments);
+
     this.pkg = require('../package.json');
+    this.argument('appName', {
+      type: String,
+      required: false
+    });
   },
 
-  prompting: function () {
-    var done = this.async();
-
-    // Have Yeoman greet the user.
+  info: function () {
     this.log(yosay(
-      'Welcome to the cool ' + chalk.red('Nc2') + ' generator!'
+      chalk.red('Yo Dawg!') + eol +
+      chalk.yellow('Freaking', chalk.bold('_Awesome_ ')) +
+      chalk.yellow('Angular scaffolds of scaffolds ') + eol +
+      chalk.gray('Black Bar Labs  ')
     ));
-
-    var prompts = [{
-      type: 'confirm',
-      name: 'someOption',
-      message: 'Would you like to enable this option?',
-      default: true
-    }];
-
-    this.prompt(prompts, function (props) {
-      this.props = props;
-      // To access props later use this.props.someOption;
-
-      done();
-    }.bind(this));
   },
 
-  writing: {
-    app: function () {
-      this.fs.copy(
-        this.templatePath('_package.json'),
-        this.destinationPath('package.json')
-      );
-      this.fs.copy(
-        this.templatePath('_bower.json'),
-        this.destinationPath('bower.json')
-      );
-    },
-
-    projectfiles: function () {
-      this.fs.copy(
-        this.templatePath('editorconfig'),
-        this.destinationPath('.editorconfig')
-      );
-      this.fs.copy(
-        this.templatePath('jshintrc'),
-        this.destinationPath('.jshintrc')
-      );
-    }
+  composeScaffold: function () {
+    var args = this.appName ? [ this.appName ] : [];
+    this.composeWith('gulp-angular', {
+      args: args,
+      options: {
+        'skip-welcome-message': 'true'
+      }
+    });
   },
 
   install: function () {
     this.installDependencies();
   }
 });
+
+module.exports = Generator;
