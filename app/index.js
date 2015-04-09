@@ -1,15 +1,17 @@
 'use strict';
+
+var path = require('path');
 var yeoman = require('yeoman-generator');
 var chalk = require('chalk');
 var yosay = require('yosay');
 var eol = require('os').EOL;
+var utils = require('../utils');
 
 var Generator = yeoman.generators.Base.extend({
 
   constructor: function () {
     yeoman.generators.Base.apply(this, arguments);
 
-    this.pkg = require('../package.json');
     this.argument('appName', {
       type: String,
       required: false
@@ -37,6 +39,19 @@ var Generator = yeoman.generators.Base.extend({
 
   install: function () {
     this.installDependencies();
+  },
+
+  end: function () {
+    // TODO: Pass in configuration values such as the app directory
+    var config = utils.getGeneratorConfig(this.config);
+
+    // Update configurations
+    var rootDir = this.destinationRoot();
+    this.config.set({
+      dirs: {
+        app: path.join(config.paths.src, 'app')
+      }
+    })
   }
 });
 
