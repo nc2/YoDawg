@@ -10,13 +10,20 @@
    */
   angular
     .module('<%= utils.lowerName(module) %>')
-    .service('<%= utils.upperName(name) %>', <%= utils.upperName(name) %>);
+    .factory('<%= utils.upperName(name) %>', <%= utils.upperName(name) %>);
 
   /* @ngInject */
   function <%= utils.upperName(name) %> () {
-    var self = this;
+    var someValue = '<%= utils.upperName(name) %>';
+    var service = {
+      someValue: someValue,
+      someMethod: someMethod
+    };
+    return service;
 
-    self.get = function () {
+    ///////////
+
+    function someMethod () {
       return '<%= utils.upperName(name) %>';
     };
   }

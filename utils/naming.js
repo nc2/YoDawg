@@ -9,9 +9,13 @@ exports.hyphenName = function hyphenName (name) {
 };
 
 exports.lowerName = function lowerName (name) {
-  return _.camelize(_.slugify(_.humanize(name)));
+  return _.humanize(name).toLowerCase();
 };
 
 exports.upperName = function upperName (name) {
   return _.classify(_.slugify(_.humanize(name)));
+};
+
+exports.stripNamespace = function stripNamespace (name) {
+  return name.split('.').splice(1, 1).join('.');
 };

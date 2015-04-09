@@ -14,16 +14,14 @@ var Generator = module.exports = yeoman.generators.NamedBase.extend({
 
     this.utils = utils;
     this.pkg = utils.getPackage(this.config);
-    this.appName = utils.getAppName(this.config);
-    this.appDir = utils.getAppDir(this.config);
+    this.srcDir = utils.getAppDir(this.config);
     this.appPath = this.destinationPath(this.config.get('dirs').app);
-
-    this.log(chalk.yellow('Using: '));
-    this.log(chalk.yellow('\tAppName: ') + this.determineAppname());
-    this.log(chalk.yellow('\tGenName: ') + this.name);
-    this.log(chalk.yellow('\tTemplates: ') + this.sourceRoot());
   }
 });
+
+Generator.prototype.logOption = function logOption (key, value) {
+  this.log(chalk.yellow('  ' + key + ': ') + value);
+};
 
 Generator.prototype.checkForUpdates = function checkForUpdates () {
   var notifier = updateNotifier({
@@ -33,13 +31,36 @@ Generator.prototype.checkForUpdates = function checkForUpdates () {
   notifier.notify();
 };
 
-Generator.prototype.getModulePath = function getModulePath (module) {
-  return path.join(this.appPath, module);
+Generator.prototype.moduleDir = function moduleDir (module) {
+  var app = this.config.get('paths').app || 'app';
+  var parts = module.split('.');
+
+  if (parts[0] !== app) {
+    // not a top-level app module, so let's add the app path back in
+    parts.unshift(app);
+  }
+
+  return _.reduce(parts, function (agg, p) {
+    return path.join(agg, p);
+  }, '');
 };
 
 Generator.prototype.modulePath = function modulePath (filename) {
-  var moduleName = this.module || 'components';
-  return path.join(this.appPath, moduleName, filename);
+  var moduleName = this.module || 'blocks';
+  var moduleDir = this.moduleDir(moduleName);
+  var dest = this.destinationPath(this.srcDir + '/' + moduleDir);
+  if (filename) {
+    dest = path.join(dest, filename);
+  }
+  return dest;
+};
+
+Generator.prototype.createFromTemplate = function createFromTemplate (opt) {
+  this.fs.copyTpl(
+    this.templatePath(opt.tmpl),
+    this.modulePath(opt.dest),
+    this
+  );
 };
 
 /**
@@ -49,14 +70,12 @@ Generator.prototype.modulePath = function modulePath (filename) {
  * @param  {type} ext  js, es6, html, etc.
  */
 Generator.prototype.createCodeFile = function createCodeFile (type, ext) {
-  var name = this.name || this.module;
-  this.fs.copyTpl(
-    this.templatePath(type + '.' + ext),
-    this.modulePath(utils.hyphenName(name) + '.' + type + '.' + ext),
-    this
-  );
+  var name = this.name || utils.stripNamespace(this.module);
+  this.createFromTemplate({
+    tmpl: type + '.' + ext,
+    dest: utils.hyphenName(name) + '.' + type + '.' + ext
+  });
 };
-
 
 /**
  * createCodeFile - description
@@ -65,22 +84,11 @@ Generator.prototype.createCodeFile = function createCodeFile (type, ext) {
  * @param  {type} ext  js, es6, html, etc.
  */
 Generator.prototype.createUnitTest = function createCodeFile (type, ext) {
-  var name = this.name || this.module;
-  this.fs.copyTpl(
-    this.templatePath('spec.' + ext),
-    this.modulePath(utils.hyphenName(name) + '.' + type + '.spec.' + ext),
-    this
-  );
+  var name = this.name || utils.stripNamespace(this.module);
+  this.createFromTemplate({
+    tmpl: type + '.spec.' + ext,
+    dest: utils.hyphenName(name) + '.' + type + '.spec.' + ext
+  });
 };
-
-Generator.prototype.copySrcFile = function copySrcFile(component) {
-  return this.copyFile('src', component);
-};
-
-Generator.prototype.copyFile = function copyFile (type, component) {
-  var dir = this.appDir; // app directory
-  // append module path
-  dir = path.join(dir, this.modulePath)
-}
 
 require('./prompts.js')(Generator);

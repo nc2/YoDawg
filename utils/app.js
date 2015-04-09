@@ -19,6 +19,10 @@ exports.getAppName = function getAppName (config) {
   return this.getPackage(config).name;
 };
 
+exports.getPaths = function getPaths (config) {
+  return this.getGeneratorConfig(config).paths;
+};
+
 exports.getAppDir = function getAppDir (config) {
   // Since we scaffolded with 'gulp-angular', we need to get it from
   // those config files.
