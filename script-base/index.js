@@ -71,6 +71,8 @@ Generator.prototype.createFromTemplate = function createFromTemplate (opt) {
  */
 Generator.prototype.createCodeFile = function createCodeFile (type, ext) {
   var name = this.name || utils.stripNamespace(this.module);
+  name = utils.stripAngularTypes(name);
+
   this.createFromTemplate({
     tmpl: type + '.' + ext,
     dest: utils.hyphenName(name) + '.' + type + '.' + ext
@@ -85,6 +87,8 @@ Generator.prototype.createCodeFile = function createCodeFile (type, ext) {
  */
 Generator.prototype.createUnitTest = function createCodeFile (type, ext) {
   var name = this.name || utils.stripNamespace(this.module);
+  name = utils.stripAngularTypes(name);
+  
   this.createFromTemplate({
     tmpl: type + '.spec.' + ext,
     dest: utils.hyphenName(name) + '.' + type + '.spec.' + ext
