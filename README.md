@@ -4,7 +4,7 @@
 
 There are as many starting points for building a new Angular single-page app as there are generators to generate them.  This one is extremely opinionated &mdash; and likes you for who you are.
 
-![](Yo Dawg.png)
+![](https://bitbucket.org/repo/qy69kL/images/887290360-yo%20dawg.png)
 
 ## Getting Started
 
