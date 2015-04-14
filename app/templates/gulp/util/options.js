@@ -2,15 +2,15 @@
     'use strict';
 
     var gutil = require('gulp-util'),
-        srcRoot = 'src/',
-        appRoot = srcRoot + 'app/',
-        assetRoot = srcRoot + 'assets/',
+        srcRoot = '<%= srcDir %>/',
+        appRoot = '<%= appDir %>/',
+        assetRoot = '<%= assetDir %>/',
         bowerRoot = 'bower_components/',
         bowerJson = './bower.json',
         mapsRoot = 'sourcemaps/';
 
     module.exports = {
-        module: 'app',
+        module: '<%= appname %>',
         browserPorts: {
             local: 8080,
             dist: 8081,
@@ -33,7 +33,7 @@
             ],
             fonts: [
                 bowerRoot + '**/*.{eot,svg,ttf,woff,woff2}',
-                srcRoot + '**/*.{eot,svg,ttf,woff,woff2}'
+                assetRoot + '**/*.{eot,svg,ttf,woff,woff2}'
             ],
             style: [
                 assetRoot + '**/*.{scss,sass,css}'

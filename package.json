@@ -1,5 +1,5 @@
 {
-  "name": "generator-nc2",
+  "name": "generator-dawg",
   "version": "0.1.0",
   "preferGlobal": true,
   "description": "Black Bar Labs Angular generator",
@@ -11,7 +11,7 @@
     "app"
   ],
   "main": "app/index.js",
-  "repository": "bunk/generator-nc2",
+  "repository": "bunk/generator-dawg",
   "author": {
     "name": "JD Courtoy",
     "email": "",

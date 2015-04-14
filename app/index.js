@@ -1,6 +1,7 @@
 'use strict';
 
 var _ = require('lodash');
+var fs = require('fs');
 var yeoman = require('yeoman-generator');
 var path = require('path');
 var mkdirp = require('mkdirp');
@@ -15,8 +16,11 @@ var Generator = yeoman.generators.Base.extend({
     yeoman.generators.Base.apply(this, arguments);
 
     this.argument('name', { type: String, required: false });
-    this.appName = utils.lowerCamelName(this.name);
-    this.appDir = 'app';
+
+    this.appname = utils.lowerCamelName(this.name);
+    this.srcDir = 'src';
+    this.appDir = this.srcDir + '/app';
+    this.assetDir = this.srcDir + '/assets';
   },
 
   info: function () {
@@ -28,24 +32,24 @@ var Generator = yeoman.generators.Base.extend({
   },
 
   checkConfig: function () {
-    if (!this.config.get('config')) {
-      return;
-    }
+    var exists = fs.existsSync('.yo-rc.json');
 
     var done = this.async();
     this.prompt([{
+      when: function (answers) { return exists; },
       type: 'confirm',
-      name: 'existingConfig',
+      name: 'useConfig',
       message: 'Yo, there\'s an existing .yo-rc configuration!  Would you like to use it?',
       default: true
     }], function (answers) {
-      this.existingConfig = answers.existingConfig
+      this.useConfig = answers.useConfig;
       done();
     }.bind(this));
   },
 
   projectPrompts: function () {
-    if (this.existingConfig) {
+    if (this.useConfig) {
+      this.appname = this.config.get('name');
       return;
     }
 
@@ -57,9 +61,12 @@ var Generator = yeoman.generators.Base.extend({
       message: 'Yo, what would you like me to name this app?',
       default: utils.lowerCamelName(path.basename(process.cwd()))
     }], function (answers) {
-      if (answers.name) {
-        this.appName = utils.lowerCamelName(answers.name);
+      if (!answers.name) {
+        this.env.error('An app name is required.');
       }
+
+      this.appname = utils.lowerCamelName(answers.name);
+      this.config.set('name', this.appname);
 
       done();
     }.bind(this));
@@ -70,7 +77,7 @@ var Generator = yeoman.generators.Base.extend({
   },
 
   displayName: function () {
-    this.log('Creating ' + chalk.green(this.appName) + ' app.');
+    this.log('Creating ' + chalk.green(this.appname) + ' app.');
   },
 
   projectFiles: function () {
@@ -78,26 +85,25 @@ var Generator = yeoman.generators.Base.extend({
     this.copy('__jshintrc', '.jshintrc');
     this.copy('__jscsrc', '.jscsrc');
     this.copy('__bowerrc', '.bowerrc');
+    this.copy('__gitignore', '.gitignore');
   },
 
   packageFiles: function () {
-    this.copy('gulp.png', 'gulp.png');
+    this.directory('gulp');
+
     this.copy('_package.json', 'package.json');
-    this.template('_bower.json', 'bower.json');
+    this.copy('_bower.json', 'bower.json');
     this.template('_gulpfile.js', 'gulpfile.js');
-    this.template('_gulp.config.js', 'gulp.config.js');
     this.template('_karma.conf.js', 'karma.conf.js');
     this.template('_README.md', 'README.md');
   },
 
   appFiles: function () {
-    this.directory('assets/images');
-    this.directory('assets/styles');
+    this.directory('src/app', this.appDir);
+    this.directory('src/assets', this.assetsDir);
 
-    this.directory('app', this.appDir);
-
-    this.template('_index.html', 'index.html');
-    this.template('_specs.html', 'specs.html');
+    this.template('src/_index.html', this.srcDir + '/index.html');
+    this.template('src/_specs.html', this.srcDir + '/specs.html');
   },
 
   install: function () {
@@ -105,17 +111,12 @@ var Generator = yeoman.generators.Base.extend({
   },
 
   end: function () {
-    // If user chooses to use exsiting yo-rc file, then skip prompts
-    if (this.existingConfig) {
-      return;
-    }
-
     this.config.set({
-      config: {
-        name: this.appName,
-        paths: {
-          app: this.appDir
-        }
+      name: this.appname,
+      paths: {
+        src: this.srcDir,
+        app: this.appDir,
+        assets: this.assetDir
       }
     });
   }

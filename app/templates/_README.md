@@ -1,8 +1,8 @@
-# <%= appName %>
+# <%= appname %>
 
 **Generated from Yo Dawg**
 
->*Opinionated AngularJS style guide for teams by [@john_papa](//twitter.com/john_papa)*
+>*Opinionated AngularJS style guide for teams*
 
 >More details about the styles and patterns used in this app can be found in my [AngularJS Style Guide](https://github.com/johnpapa/angularjs-styleguide) and my [AngularJS Patterns: Clean Code](http://jpapa.me/ngclean) course at [Pluralsight](http://pluralsight.com/training/Authors/Details/john-papa) and working in teams.
 
@@ -17,12 +17,12 @@
 3. Install these NPM packages globally
 
     ```bash
-    npm install -g bower gulp nodemon`
+    npm install -g bower gulp
     ```
 
     >Refer to these [instructions on how to not require sudo](https://github.com/sindresorhus/guides/blob/master/npm-global-without-sudo.md)
 
-## Running HotTowel
+## Running Dawg
 
 ### Linting
  - Run code analysis using `gulp vet`. This runs jshint, jscs, and plato.
@@ -43,7 +43,7 @@
  - Run the optimize project from the build folder with `gulp serve-build`
 
 ## Exploring the project
-NC2 Angular starter project
+Yo Dawg starter project
 
 ### Structure
 The structure also contains a gulpfile.js.
@@ -79,21 +79,21 @@ app --> [
     ]
 ```
 
-#### core Module
+#### Core Module
 Core modules are ones that are shared throughout the entire application and may be customized for the specific application. Example might be common data services.
 
 This is an aggregator of modules that the application will need. The `core` module takes the blocks, common, and Angular sub-modules as dependencies.
 
-#### blocks Modules
+#### Blocks Modules
 Block modules are reusable blocks of code that can be used across projects simply by including them as dependencies.
 
-##### blocks.logger Module
+##### Blocks.Logger Module
 The `blocks.logger` module handles logging across the Angular app.
 
-##### blocks.exception Module
+##### Blocks.Exception Module
 The `blocks.exception` module handles exceptions across the Angular app.
 
 It depends on the `blocks.logger` module, because the implementation logs the exceptions.
 
-##### blocks.router Module
+##### Blocks.Router Module
 The `blocks.router` module contains a routing helper module that assists in adding routes to the $routeProvider.
