@@ -56,9 +56,16 @@ Generator.prototype.modulePath = function modulePath (filename) {
 };
 
 Generator.prototype.createFromTemplate = function createFromTemplate (opt) {
+  // strip the angular types from the name since they're
+  // getting added as 'type' and that's redundant
+  var name = this.name || utils.stripNamespace(this.module);
+  name = utils.hyphenName(utils.stripAngularTypes(name));
+
+  var options = opt(name);
+
   this.fs.copyTpl(
-    this.templatePath(opt.tmpl),
-    this.modulePath(opt.dest),
+    this.templatePath(options.tmpl),
+    this.modulePath(options.dest),
     this
   );
 };
@@ -70,12 +77,11 @@ Generator.prototype.createFromTemplate = function createFromTemplate (opt) {
  * @param  {type} ext  js, es6, html, etc.
  */
 Generator.prototype.createCodeFile = function createCodeFile (type, ext) {
-  var name = this.name || utils.stripNamespace(this.module);
-  name = utils.stripAngularTypes(name);
-
-  this.createFromTemplate({
-    tmpl: type + '.' + ext,
-    dest: utils.hyphenName(name) + '.' + type + '.' + ext
+  this.createFromTemplate(function (name) {
+    return {
+      tmpl: type + '.' + ext,
+      dest: name + '.' + type + '.' + ext
+    }
   });
 };
 
@@ -86,12 +92,11 @@ Generator.prototype.createCodeFile = function createCodeFile (type, ext) {
  * @param  {type} ext  js, es6, html, etc.
  */
 Generator.prototype.createUnitTest = function createCodeFile (type, ext) {
-  var name = this.name || utils.stripNamespace(this.module);
-  name = utils.stripAngularTypes(name);
-  
-  this.createFromTemplate({
-    tmpl: type + '.spec.' + ext,
-    dest: utils.hyphenName(name) + '.' + type + '.spec.' + ext
+  this.createFromTemplate(function (name) {
+    return {
+      tmpl: type + '.spec.' + ext,
+      dest: name + '.' + type + '.spec.' + ext
+    }
   });
 };
 
