@@ -49,11 +49,21 @@
               .pipe(gulp.dest(options.paths.docs));
         },
         watch: function (mode) {
-            var root = options.paths.root;
+            var root = options.paths.root,
+                paths = {
+                    index: root + '**/index.html',
+                    js: root + '**/*.js',
+                    sass: root + '**/*.scss',
+                    templates: [
+                        options.paths.app + '**/*.html',
+                        '!' + options.paths.app + '**/index.html'
+                    ]
+                };
 
-            gulp.watch(root + '**/*.html',  ['build' + mode, plugins.browserSync.reload]).on('change', reportChange);
-            gulp.watch(root + '**/*.js',    ['build' + mode, plugins.browserSync.reload]).on('change', reportChange);
-            gulp.watch(root + '**/*.scss',  ['build' + mode, plugins.browserSync.reload]).on('change', reportChange);
+            gulp.watch(paths.templates, ['templates' + mode, plugins.browserSync.reload]).on('change', reportChange);
+            gulp.watch(paths.index,     ['html' + mode, plugins.browserSync.reload]).on('change', reportChange);
+            gulp.watch(paths.js,        ['js' + mode, plugins.browserSync.reload]).on('change', reportChange);
+            gulp.watch(paths.sass,      ['sass' + mode, plugins.browserSync.reload]).on('change', reportChange);
         }
     };
 })();
