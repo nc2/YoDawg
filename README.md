@@ -53,7 +53,7 @@ yo dawg [app-name]
 * [dawg:constant](#constant)
 * [dawg:value](#value)
 
-### App
+### <a name="app"></a> App
 Sets up a new AngularJS app, generating all the boilerplate you need to get started.  The app generator is currently very prescriptive and will use the following technologies: [font-awesome](), [foundation](), [jquery](), [restangular](), and [gulp]().
 
 Example:
@@ -61,7 +61,7 @@ Example:
 yo dawg [app-name]
 ```
 
-### Module
+### <a name="app"></a> Module
 Creates a new module for application code to reside and wires it up to the root app module.
 
 Example:
@@ -77,7 +77,7 @@ src/app/core/named.module.spec.js
 
 ** Required to provide a module namespace &mdash; `app` is the default. (i.e., `app.core`)**
 
-### Controller
+### <a name="app"></a> Controller
 Generates a new application controller.
 
 Example:
