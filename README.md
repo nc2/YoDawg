@@ -37,23 +37,23 @@ yo dawg [app-name]
 ### Angular Generators
 
 #### Structural
-* [dawg](#app) (aka [dawg:app](#app))
-* [dawg:module](#module)
+* [dawg](#markdown-header-app) (aka [dawg:app](#markdown-header-app))
+* [dawg:module](#markdown-header-module)
 
 #### Front-end
-* [dawg:controller](#controller)
-* [dawg:directive](#directive)
-* [dawg:filter](#filter)
-* [dawg:decorator](#decorator)
+* [dawg:controller](#markdown-header-controller)
+* [dawg:directive](#markdown-header-directive)
+* [dawg:filter](#markdown-header-filter)
+* [dawg:decorator](#markdown-header-decorator)
 
 #### Services
-* [dawg:provider](#provider)
-* [dawg:factory](#factory)
-* [dawg:service](#service)
-* [dawg:constant](#constant)
-* [dawg:value](#value)
+* [dawg:provider](#markdown-header-provider)
+* [dawg:factory](#markdown-header-factory)
+* [dawg:service](#markdown-header-service)
+* [dawg:constant](#markdown-header-constant)
+* [dawg:value](#markdown-header-value)
 
-### <a name="app"></a> App
+### App
 Sets up a new AngularJS app, generating all the boilerplate you need to get started.  The app generator is currently very prescriptive and will use the following technologies: [font-awesome](), [foundation](), [jquery](), [restangular](), and [gulp]().
 
 Example:
@@ -61,7 +61,7 @@ Example:
 yo dawg [app-name]
 ```
 
-### <a name="app"></a> Module
+### Module
 Creates a new module for application code to reside and wires it up to the root app module.
 
 Example:
@@ -77,7 +77,7 @@ src/app/core/named.module.spec.js
 
 ** Required to provide a module namespace &mdash; `app` is the default. (i.e., `app.core`)**
 
-### <a name="app"></a> Controller
+### Controller
 Generates a new application controller.
 
 Example:
