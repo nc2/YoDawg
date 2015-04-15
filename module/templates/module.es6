@@ -2,11 +2,11 @@
   'use strict';
 
   /* @ngdoc object
-   * @name <%= utils.lowerName(module) %>
+   * @name <%= module %>
    * @description
    *
    */
   angular
-    .module('<%= utils.lowerName(module) %>', [
+    .module('<%= module %>', [
     ]);
 }());

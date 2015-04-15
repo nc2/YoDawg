@@ -7,12 +7,12 @@
 
   var Generator = module.exports = base.extend();
 
-  Generator.prototype.initialize = function initialize () {
-    this.name = normalizeName(this.name);
+  Generator.prototype.promptName = function prompting () {
+      this.askForName(this.name, normalizeName);
   };
 
-  Generator.prototype.prompting = function prompting () {
-    this.askForModuleName();
+  Generator.prototype.promptModule = function prompting () {
+      this.askForModuleName();
   };
 
   Generator.prototype.writing = function writing () {
@@ -21,7 +21,8 @@
   };
 
   function normalizeName (name) {
-    return utils.upperName(name.replace(/controller|ctrl$/i, '') + 'Controller');
+      if (!name) return;
+      return utils.upperName(name.replace(/controller|ctrl$/i, '') + 'Controller');
   }
 
 }());

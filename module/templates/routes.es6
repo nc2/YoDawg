@@ -2,7 +2,7 @@
   'use strict';
 
   angular
-    .module('<%= utils.lowerName(module) %>')
+    .module('<%= module %>')
     .config(config);
 
   function config() {

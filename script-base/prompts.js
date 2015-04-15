@@ -12,35 +12,70 @@ function logChoice(prompt, prop) {
 
 module.exports = function (Generator) {
 
-  Generator.prototype.askForModuleName = function askForModuleName (params) {
-    var done = this.async();
+    Generator.prototype.ask = function ask (prompt, accept, value) {
+        if (value && prompt.validate && prompt.validate(value) === true) {
+            return accept(value);
+        }
 
-    this.checkForUpdates();
+        prompt.name = 'answer';
 
-    this.prompt({
-      type: 'input',
-      name: 'module',
-      message: 'Which module is this for?',
-      default: this.config.get('lastModule') || 'components'
-    }, function (props) {
-      this.module = utils.cleanModuleName(props.module);
-      this.config.set('lastModule', this.module);
+        var done = this.async();
+        this.prompt(prompt, function (answers) {
+            accept(answers.answer);
+            done();
+        });
+    };
 
-      done();
-    }.bind(this));
-  };
+    Generator.prototype.askForModuleName = function askForModuleName (name) {
+        var self = this;
+        self.ask({
+            validate: validate,
+            type: 'input',
+            message: 'Which module is this for?',
+            default: name || this.config.get('lastModule') || 'app.myModule'
+        }, function (module) {
+            self.module = utils.moduleName(module);
+            self.config.set('lastModule', this.module);
+        });
 
-  Generator.prototype.askForScriptType = function askForScriptType (params) {
-    var done = this.async();
+        function validate (value) {
+            if (!value) {
+                return 'A module name is required.';
+            }
+            if (value.split('.').length < 2) {
+                return 'A module name should always have a root namespace. (ie, app.core, blocks.logger, ...)';
+            }
+            if (value.split(' ').length > 1) {
+                return 'A module name cannot contain spaces. (ie, app.core, blocks.logger, ...)';
+            }
+            return true;
+        }
+    };
 
-    this.prompt([{
-      type: 'input',
-      name: 'scriptType',
-      message: 'Which script type would you like to generate?',
-      default: ''
-    }], function (answers) {
+    Generator.prototype.askForName = function askForName (name, transform) {
+        var self = this;
 
-    })
-  };
+        transform = transform || function (x) { return x; };
+        name = transform(name);
+
+        self.ask({
+            validate: validate,
+            type: 'input',
+            message: 'What do you want to call it?',
+            default: name || 'dawg'
+        }, function (value) {
+            self.name = transform(value);
+        });
+
+        function validate (value) {
+            if (!value) {
+                return 'A name is required.';
+            }
+            if (value.split(' ').length > 1) {
+                return 'A name cannot contain spaces.';
+            }
+            return true;
+        }
+    };
 
 };

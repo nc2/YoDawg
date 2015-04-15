@@ -3,17 +3,17 @@
 
   /**
    * @ngdoc service
-   * @name <%= utils.lowerName(module) %>.factory:<%= utils.upperName(name) %>
+   * @name <%= module %>.factory:<%= utils.upperName(name) %>
    *
    * @description
    *
    */
   angular
-    .module('<%= utils.lowerName(module) %>')
-    .factory('<%= utils.upperName(name) %>', <%= utils.upperName(name) %>);
+    .module('<%= module %>')
+    .factory('<%= utils.lowerCamelName(name) %>', <%= utils.lowerCamelName(name) %>);
 
   /* @ngInject */
-  function <%= utils.upperName(name) %> () {
+  function <%= utils.lowerCamelName(name) %> () {
     var someValue = '<%= utils.upperName(name) %>';
     var service = {
       someValue: someValue,
@@ -24,7 +24,7 @@
     ///////////
 
     function someMethod () {
-      return '<%= utils.upperName(name) %>';
+      return '<%= utils.lowerCamelName(name) %>';
     };
   }
 }());

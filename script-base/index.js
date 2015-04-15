@@ -8,14 +8,22 @@ var updateNotifier = require('update-notifier');
 
 var utils = require('../utils');
 
-var Generator = module.exports = yeoman.generators.NamedBase.extend({
+var Generator = module.exports = yeoman.generators.Base.extend({
   constructor: function () {
-    yeoman.generators.NamedBase.apply(this, arguments);
+    yeoman.generators.Base.apply(this, arguments);
+
+    this.argument('name', { type: String, required: false });
 
     this.utils = utils;
     this.pkg = utils.getPackage(this.config);
-    this.srcDir = utils.getAppDir(this.config);
-    this.appPath = this.destinationPath(this.config.get('dirs').app);
+
+    this.srcDir = this.config.get('paths').src;
+    this.srcPath = this.destinationPath(this.srcDir);
+
+    this.appDir = this.config.get('paths').app;
+    this.appPath = this.destinationPath(this.appDir);
+
+    this.checkForUpdates();
   }
 });
 
@@ -32,12 +40,12 @@ Generator.prototype.checkForUpdates = function checkForUpdates () {
 };
 
 Generator.prototype.moduleDir = function moduleDir (module) {
-  var app = this.config.get('paths').app || 'app';
+  var rootNamespace = 'app';
   var parts = module.split('.');
 
-  if (parts[0] !== app) {
+  if (parts[0] !== rootNamespace) {
     // not a top-level app module, so let's add the app path back in
-    parts.unshift(app);
+    parts.unshift(rootNamespace);
   }
 
   return _.reduce(parts, function (agg, p) {
@@ -47,11 +55,14 @@ Generator.prototype.moduleDir = function moduleDir (module) {
 
 Generator.prototype.modulePath = function modulePath (filename) {
   var moduleName = this.module || 'blocks';
+
   var moduleDir = this.moduleDir(moduleName);
+
   var dest = this.destinationPath(this.srcDir + '/' + moduleDir);
   if (filename) {
     dest = path.join(dest, filename);
   }
+
   return dest;
 };
 

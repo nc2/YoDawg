@@ -4,7 +4,7 @@
 describe('<%= utils.upperName(name) %>', function () {
   var service;
 
-  beforeEach(module('<%= utils.lowerName(module) %>'));
+  beforeEach(module('<%= module %>'));
 
   beforeEach(inject(function (<%= utils.upperName(name) %>) {
     service = <%= utils.upperName(name) %>;
