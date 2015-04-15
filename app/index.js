@@ -57,8 +57,8 @@ var Generator = yeoman.generators.Base.extend({
     var done = this.async();
     this.prompt([{
       when: function (answers) { return !this.appname; }.bind(this),
-      validate: function (answers) {
-        if (!answers.name) {
+      validate: function (name) {
+        if (!name) {
           return 'An app name is required.';
         }
         return true;
