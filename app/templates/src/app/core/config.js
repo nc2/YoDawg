@@ -13,8 +13,8 @@
     }
 
     var config = {
-        appErrorPrefix: '[<%= appName %> Error] ',
-        appTitle: '<%= appName %>'
+        appErrorPrefix: '[<%= appname %> Error] ',
+        appTitle: '<%= appname %>'
     };
 
     core.value('config', config);

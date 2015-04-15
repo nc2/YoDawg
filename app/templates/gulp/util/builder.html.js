@@ -15,11 +15,6 @@
                 progressive: true,
                 svgoPlugins: [{removeViewBox: false}],
                 use: [pngquant()]
-            },
-            templateCache: {
-                module: options.module + '.core',
-                root: 'app/',
-                standAlone: false
             }
         };
 
@@ -118,7 +113,11 @@
                 ];
             var pipeline = gulp.src(src)
                 .pipe(plugins.if(isDist, plugins.minifyHtml(opts.html)))
-                .pipe(plugins.angularTemplatecache('templates.js', opts.templateCache))
+                .pipe(plugins.angularTemplatecache('templates.js', {
+                    module: 'app.core',
+                    root: 'app/',
+                    standAlone: false
+                }))
                 .pipe(plugins.rev())
                 .pipe(gulp.dest(dest + '/app'));
             return pipeline;

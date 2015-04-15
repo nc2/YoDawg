@@ -21,7 +21,7 @@
             // We only want CSS and fonts included.
             // SASS should be included by a project SASS file instead so that
             // variables can be changed within the project.
-            { filter: '**/*.{css,eot,svg,ttf,woff}' }
+            { filter: '**/*.{css,eot,svg,ttf,woff,woff2,map}' }
         );
     }
 
