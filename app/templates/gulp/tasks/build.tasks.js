@@ -13,14 +13,14 @@
         sassBuilder = require('../util/builder.sass');
 
     // TASK RUNNERS
-    gulp.task('default', ['watch']);
+    gulp.task('default', ['serve']);
 
     gulp.task('js', ['app.js','vendor.js']);
     gulp.task('js:dist', ['app.js:dist','vendor.js:dist']);
 
-    gulp.task('watch',      ['serve'],      function() { return utilities.watch(''); });
-    gulp.task('watch:dist', ['serve:dist'], function() { return utilities.watch(':dist'); });
-    gulp.task('watch:docs', ['serve:docs'], function() { return; } );
+    gulp.task('watch',      ['build'],      function() { return utilities.watch(''); });
+    gulp.task('watch:dist', ['build:dist'], function() { return utilities.watch(':dist'); });
+    gulp.task('watch:docs', ['gendocs'],    function() { return; } );
 
     // PROJECT BUILDERS
     gulp.task('build',          function(cb) { return build.build(false, cb); });
@@ -38,9 +38,9 @@
     gulp.task('vendor.js:dist', function() { return vendorScriptBuilder.vendor(true); });
 
     // SERVER
-    gulp.task('serve',      ['build'],      function(d) { return serve.serve(options.browserPorts.local, options.paths.local, d); });
-    gulp.task('serve:docs', ['gendocs'],    function(d) { return serve.serve(options.browserPorts.docs, options.paths.docs, d); });
-    gulp.task('serve:dist', ['build:dist'], function(d) { return serve.serve(options.browserPorts.dist, options.paths.dist, d); });
+    gulp.task('serve',      ['watch'],      function(d) { return serve.serve(options.browserPorts.local, options.paths.local, d); });
+    gulp.task('serve:docs', ['watch:docs'], function(d) { return serve.serve(options.browserPorts.docs, options.paths.docs, d); });
+    gulp.task('serve:dist', ['watch:dist'], function(d) { return serve.serve(options.browserPorts.dist, options.paths.dist, d); });
 
     // STYLES BUILDERS
     gulp.task('sass',           function() { return sassBuilder.sass(false); });

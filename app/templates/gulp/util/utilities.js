@@ -62,10 +62,7 @@
                     index: root + '**/index.html',
                     js: root + '**/*.js',
                     sass: root + '**/*.scss',
-                    templates: [
-                        options.paths.app + '**/*.html',
-                        '!' + options.paths.app + '**/index.html'
-                    ]
+                    templates: options.paths.app + '**/*.html'
                 };
 
             gulp.watch(paths.templates, ['templates' + mode, plugins.browserSync.reload]).on('change', reportChange);

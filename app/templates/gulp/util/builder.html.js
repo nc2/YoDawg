@@ -118,7 +118,7 @@
                     root: 'app/',
                     standAlone: false
                 }))
-                .pipe(plugins.rev())
+                .pipe(plugins.if(isDist, plugins.rev()))
                 .pipe(gulp.dest(dest + '/app'));
             return pipeline;
         }
