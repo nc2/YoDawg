@@ -32,10 +32,10 @@ module.exports = function (Generator) {
             validate: validate,
             type: 'input',
             message: 'Which module is this for?',
-            default: name || this.config.get('lastModule') || 'app.myModule'
+            default: name || self.config.get('lastModule') || 'app.myModule'
         }, function (module) {
             self.module = utils.moduleName(module);
-            self.config.set('lastModule', this.module);
+            self.config.set('lastModule', self.module);
         });
 
         function validate (value) {

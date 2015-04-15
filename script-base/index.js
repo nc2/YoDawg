@@ -81,6 +81,15 @@ Generator.prototype.createFromTemplate = function createFromTemplate (opt) {
   );
 };
 
+Generator.prototype.createSimpleFile = function createCodeFile (type, ext) {
+  this.createFromTemplate(function (name) {
+    return {
+      tmpl: type + '.' + ext,
+      dest: name + '.' + ext
+    }
+  });
+};
+
 /**
  * createCodeFile - description
  *
