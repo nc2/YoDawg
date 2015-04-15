@@ -3,7 +3,10 @@
 
     var gulp = require('gulp'),
         build = require('../util/build'),
+        options = require('../util/options'),
         utilities = require('../util/utilities'),
+        serve = require('../util/serve'),
+        preRelease = require('../util/prerelease'),
         htmlBuilder = require('../util/builder.html'),
         appScriptBuilder = require('../util/builder.script.app'),
         vendorScriptBuilder = require('../util/builder.script.vendor'),
@@ -15,19 +18,29 @@
     gulp.task('js', ['app.js','vendor.js']);
     gulp.task('js:dist', ['app.js:dist','vendor.js:dist']);
 
-    gulp.task('watch', ['serve'],           function() { return utilities.watch(''); });
+    gulp.task('watch',      ['serve'],      function() { return utilities.watch(''); });
     gulp.task('watch:dist', ['serve:dist'], function() { return utilities.watch(':dist'); });
-    gulp.task('watch:docs', ['serve:docs'] );
+    gulp.task('watch:docs', ['serve:docs'], function() { return; } );
 
     // PROJECT BUILDERS
     gulp.task('build',          function(cb) { return build.build(false, cb); });
     gulp.task('build:dist',     function(cb) { return build.build(true, cb); });
+
+    // RELEASE PREP
+    gulp.task('bump-version',   function() { return preRelease.bumpVersion(); });
+    gulp.task('changelog',      function(cb) { return preRelease.changeLog(cb); });
+    gulp.task('prep-release',   function(cb) { return preRelease.prepRelease(cb); });
 
     // SCRIPT BUILDERS
     gulp.task('app.js',         function() { return appScriptBuilder.app(false); });
     gulp.task('app.js:dist',    function() { return appScriptBuilder.app(true); });
     gulp.task('vendor.js',      function() { return vendorScriptBuilder.vendor(false); });
     gulp.task('vendor.js:dist', function() { return vendorScriptBuilder.vendor(true); });
+
+    // SERVER
+    gulp.task('serve',      ['build'],      function(d) { return serve.serve(options.browserPorts.local, options.paths.local, d); });
+    gulp.task('serve:docs', ['gendocs'],    function(d) { return serve.serve(options.browserPorts.docs, options.paths.docs, d); });
+    gulp.task('serve:dist', ['build:dist'], function(d) { return serve.serve(options.browserPorts.dist, options.paths.dist, d); });
 
     // STYLES BUILDERS
     gulp.task('sass',           function() { return sassBuilder.sass(false); });
@@ -46,7 +59,5 @@
     // UTILITIES
     gulp.task('clean',          function() { return utilities.clean(false); });
     gulp.task('clean:dist',     function() { return utilities.clean(true); });
-
     gulp.task('gendocs',        function() { return utilities.gendocs(); });
-
 })();

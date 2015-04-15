@@ -5,10 +5,17 @@
         gulp = require('gulp'),
         options = require('./options'),
         plugins = require('gulp-load-plugins')({
-            lazy: false, pattern: ['gulp-*', 'browser-sync', 'main-bower-files', 'uglify-save-license', 'del']
+            lazy: false, pattern: ['gulp-*', 'browser-sync', 'main-bower-files', 'uglify-save-license', 'del', 'yargs']
         }),
         del = require('del'),
-        vinylPaths = require('vinyl-paths');
+        vinylPaths = require('vinyl-paths'),
+        argv = plugins.yargs.argv,
+        validBumpTypes = 'major|minor|patch|prerelease'.split('|'),
+        bump = (argv.bump || 'patch').toLowerCase();
+
+    if(validBumpTypes.indexOf(bump) === -1) {
+      throw new Error('Unrecognized bump "' + bump + '".');
+    }
 
     function reportChange(event) {
         var srcPattern = new RegExp('/.*(?=/' + options.paths.root + ')/');
@@ -32,6 +39,7 @@
 
     module.exports = {
         log: log,
+        bump: bump,
         clean: function (isDist) {
             var path = rootPath(isDist);
             return gulp.src(path)
