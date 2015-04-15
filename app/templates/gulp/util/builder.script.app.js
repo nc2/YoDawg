@@ -19,14 +19,13 @@
     module.exports = {
         // Moves app scripts to the dest folder
         app: function (isDist) {
-            var dest = rootPath(isDist),
-                scripts = [
-                    options.paths.app + '**/*.js',
-                    '!' + options.paths.app + '**/*.spec.js'
-                ];
+            var dest = rootPath(isDist);
 
             var pipeline = plugins.streamSeries(
-                    gulp.src(scripts).pipe(plugins.angularFilesort())
+                    gulp.src([
+                            options.paths.app + '**/*.js',
+                            '!' + options.paths.app + '**/*.spec.js'
+                        ]).pipe(plugins.angularFilesort())
                 )
                 .pipe(plugins.plumber(onError))
                 .pipe(plugins.changed(dest))

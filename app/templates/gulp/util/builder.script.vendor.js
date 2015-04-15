@@ -3,12 +3,14 @@
 
     var gulp = require('gulp'),
         plugins = require('gulp-load-plugins')({
-            lazy: false, pattern: ['gulp-*', 'main-bower-files', 'uglify-save-license', 'del', 'event-stream']
+            lazy: false, pattern: ['gulp-*', 'main-bower-files', 'uglify-save-license', 'del', 'event-stream', 'stream-series']
         }),
         options = require('./options');
 
     function rootPath(isDist) {
-        return (isDist) ? options.paths.dist : options.paths.local;
+        return (isDist) ?
+            options.paths.dist + 'vendor/' :
+            options.paths.local + 'bower_components/';
     }
 
     function onError(err) {
@@ -17,18 +19,14 @@
     }
 
     module.exports = {
-        // Runs any independent
         vendor: function (isDist) {
             var dest = rootPath(isDist),
                 jsFilter = plugins.filter('**/*.js');
 
-            if(!isDist) {
-                dest += options.paths.bower;
-            } else {
-                dest += 'vendor/';
-            }
-
-            var pipeline = gulp.src(plugins.mainBowerFiles(), { base: options.paths.bower })
+            var pipeline = plugins.streamSeries(
+                    gulp.src(plugins.mainBowerFiles(), { base: options.paths.bower }),
+                    gulp.src(options.paths.vendor + '**/*.js')
+                )
                 .pipe(plugins.plumber(onError))
                 .pipe(plugins.changed(dest))
                 .pipe(jsFilter);

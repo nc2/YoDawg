@@ -31,37 +31,55 @@
         return rootPath(isDist) + path;
     }
 
+    function jsDist(dest) {
+        return plugins.streamSeries(
+            gulp.src(dest + 'vendor/**/*.js', { read: true }),
+            gulp.src(dest + 'app/**/*.js', { read: true })
+                .pipe(plugins.angularFilesort())
+        );
+    }
+
+    function jsLocal(dest) {
+        return plugins.streamSeries(
+            // Angular filesort is very important to preserve correct
+            // dependency ordering.  Reading the files is necessary
+            // for filsort to work correctly.
+            gulp.src(dest + 'app/**/*.js', { read: true })
+                .pipe(plugins.angularFilesort())
+        );
+    }
+
+    function cssDist(dest) {
+        return gulp.src(options.paths.dist + '**/*.css');
+    }
+
+    function cssLocal(dest) {
+        return plugins.streamSeries(
+            // Order matters here. Import global styles before others.
+            gulp.src(dest + 'assets/styles/**/*.css', { read: false }),
+            gulp.src(dest + 'app/**/*.scss', { read: false })
+        );
+    }
+
+    function bower() {
+        return gulp.src(plugins.mainBowerFiles(), { read: false });
+    }
+
     module.exports = {
         html: function(isDist) {
-            var dest = rootPath(isDist),
-                distJsFiles = plugins.streamSeries(
-                    // Ordering on Angular files
-                    gulp.src(options.paths.dist + 'vendor/**/*.js'),
-                    gulp.src(options.paths.dist + 'app/**/*.js')
-                ),
-                distCssFiles = gulp.src(options.paths.dist + '**/*.css'),
-                bowerFiles = gulp.src(plugins.mainBowerFiles(), { read: false }),
-                jsFiles = plugins.streamSeries(
-                    // Ordering on Angular files
-                    gulp.src(dest + 'app/**/*.js').pipe(plugins.angularFilesort())
-                ),
-                cssFiles = plugins.streamSeries(
-                    // Order matters here. Import global styles before others.
-                    gulp.src(dest + 'assets/styles/**/*.css', { read: false }),
-                    gulp.src(dest + 'app/**/*.scss', { read: false })
-                );
+            var dest = rootPath(isDist);
 
             var pipeline = gulp.src(options.paths.root + 'index.html')
             if(isDist) {
                 pipeline = pipeline
-                    .pipe(plugins.inject(distJsFiles, {ignorePath: dest}))
-                    .pipe(plugins.inject(distCssFiles, {ignorePath: dest}))
+                    .pipe(plugins.inject(jsDist(dest), { ignorePath: dest }))
+                    .pipe(plugins.inject(cssDist(dest), { ignorePath: dest }))
                     //.pipe(plugins.minifyHtml(opts.html))
             } else {
                 pipeline = pipeline
-                    .pipe(plugins.inject(bowerFiles, {name: 'bower'}))
-                    .pipe(plugins.inject(jsFiles, {ignorePath: dest}))
-                    .pipe(plugins.inject(cssFiles, {ignorePath: dest}))
+                    .pipe(plugins.inject(bower(), { name: 'bower' }))
+                    .pipe(plugins.inject(jsLocal(dest), { ignorePath: dest }))
+                    .pipe(plugins.inject(cssLocal(dest), { ignorePath: dest }))
             }
             pipeline = pipeline
                 .pipe(gulp.dest(dest))
