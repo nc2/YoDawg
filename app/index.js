@@ -18,6 +18,7 @@ var Generator = yeoman.generators.Base.extend({
     this.argument('name', { type: String, required: false });
 
     this.appname = utils.lowerCamelName(this.name);
+
     this.srcDir = 'src';
     this.appDir = this.srcDir + '/app';
     this.assetDir = this.srcDir + '/assets';
@@ -56,17 +57,21 @@ var Generator = yeoman.generators.Base.extend({
     var done = this.async();
     this.prompt([{
       when: function (answers) { return !this.appname; }.bind(this),
+      validate: function (answers) {
+        if (!answers.name) {
+          return 'An app name is required.';
+        }
+        return true;
+      },
       type: 'input',
       name: 'name',
       message: 'Yo, what would you like me to name this app?',
       default: utils.lowerCamelName(path.basename(process.cwd()))
     }], function (answers) {
-      if (!answers.name) {
-        this.env.error('An app name is required.');
+      if (answers.name) {
+        this.appname = utils.lowerCamelName(answers.name);
+        this.config.set('name', this.appname);
       }
-
-      this.appname = utils.lowerCamelName(answers.name);
-      this.config.set('name', this.appname);
 
       done();
     }.bind(this));
