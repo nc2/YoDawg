@@ -17,20 +17,21 @@
         function getGeneratorList() {
           return $q.when({
             'structure' : [
+                'dawg:app',
                 'dawg:module'
             ],
             'frontend' : [
                 'dawg:controller',
                 'dawg:directive',
-                'dawg:filter',
-                'dawg:decorator'
+                //'dawg:filter',
+                //'dawg:decorator'
             ],
             'service' : [
-                'dawg:provider',
+                //'dawg:provider',
                 'dawg:factory',
                 'dawg:service',
-                'dawg:constant',
-                'dawg:value'
+                //'dawg:constant',
+                //'dawg:value'
             ]
           });
         }
