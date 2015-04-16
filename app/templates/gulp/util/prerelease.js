@@ -2,17 +2,24 @@
     'use strict';
 
     var gulp = require('gulp'),
+        options = require('./options'),
+        plugins = require('gulp-load-plugins')(options.loadPlugins),
+        fs = require('fs'),
         runSequence = require('run-sequence'),
         changelog = require('conventional-changelog'),
-        fs = require('fs'),
-        bump = require('gulp-bump'),
-        args = require('../args');
+        argv = plugins.yargs.argv,
+        validBumpTypes = 'major|minor|patch|prerelease'.split('|'),
+        bump = (argv.bump || 'patch').toLowerCase();
+
+    if(validBumpTypes.indexOf(bump) === -1) {
+      throw new Error('Unrecognized bump "' + bump + '".');
+    }
 
     module.exports = {
         // Runs any independent
         bumpVersion: function () {
             return gulp.src(['./package.json'])
-                .pipe(bump({type:args.bump })) //major|minor|patch|prerelease
+                .pipe(plugins.bump({ type:bump })) //major|minor|patch|prerelease
                 .pipe(gulp.dest('./'));
         },
         changeLog: function (callback) {
@@ -29,7 +36,7 @@
             return runSequence(
                 'build:dist',
                 'bump-version',
-                'gendocs',
+                'build:docs',
                 'changelog',
                 callback
             );

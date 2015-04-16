@@ -2,10 +2,8 @@
     'use strict';
 
     var gulp = require('gulp'),
-        plugins = require('gulp-load-plugins')({
-            lazy: false, pattern: ['gulp-*', 'main-bower-files', 'uglify-save-license', 'del', 'event-stream', 'stream-series']
-        }),
-        options = require('./options');
+        options = require('./options'),
+        plugins = require('gulp-load-plugins')(options.loadPlugins);
 
     function rootPath(isDist) {
         return (isDist) ?
@@ -14,7 +12,7 @@
     }
 
     function onError(err) {
-        console.log(err);
+        utilities.logError( '[vendor.js]', err );
         this.emit('end');
     }
 

@@ -2,17 +2,16 @@
     'use strict';
 
     var gulp = require('gulp'),
+        utilities = require('./utilities'),
         options = require('./options'),
-        plugins = require('gulp-load-plugins')({
-            lazy: false, pattern: ['gulp-*', 'main-bower-files', 'uglify-save-license', 'del', 'stream-series']
-        });
+        plugins = require('gulp-load-plugins')(options.loadPlugins);
 
     function rootPath(isDist) {
         return (isDist) ? options.paths.dist : options.paths.local;
     }
 
     function onError(err) {
-        console.log(err);
+        utilities.logError( '[sass]', err );
         this.emit('end');
     }
 
@@ -37,17 +36,24 @@
                     gulp.src(options.paths.assets + '**/*.{scss,sass,css}', { base: options.paths.root }),
                     gulp.src(options.paths.app + '**/*.{scss,sass,css}', { base: options.paths.root })
                 )
-                .pipe(plugins.plumber(onError))
-                .pipe(sassFilter)
-                .pipe(plugins.sass()) // Only run SASS on SASS files
-                .pipe(sassFilter.restore());
-
+                .pipe(plugins.plumber(onError));
             if (isDist) {
                 pipeline = pipeline
+                    // Only run SASS on SASS files
+                    .pipe(sassFilter)
                     .pipe(plugins.sourcemaps.init())
-                    .pipe(plugins.csso())
+                    .pipe(plugins.notify('file: <%= file.relative %>'))
+                    .pipe(plugins.sass())
+                    .pipe(plugins.minifyCss())
+                    .pipe(plugins.concat('main.css'))
                     .pipe(plugins.rev())
-                    .pipe(plugins.sourcemaps.write(options.paths.maps));
+                    .pipe(plugins.sourcemaps.write(options.paths.maps))
+                    .pipe(sassFilter.restore());
+            } else {
+                pipeline = pipeline
+                    .pipe(sassFilter)
+                    .pipe(plugins.sass().on('error', onError))
+                    .pipe(sassFilter.restore());
             }
 
             pipeline = pipeline

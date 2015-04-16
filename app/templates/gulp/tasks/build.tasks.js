@@ -18,9 +18,9 @@
     gulp.task('js', ['app.js','vendor.js']);
     gulp.task('js:dist', ['app.js:dist','vendor.js:dist']);
 
-    gulp.task('watch',      ['build'],      function() { return utilities.watch(''); });
-    gulp.task('watch:dist', ['build:dist'], function() { return utilities.watch(':dist'); });
-    gulp.task('watch:docs', ['gendocs'],    function() { return; } );
+    gulp.task('watch',      ['build'],      function() { return utilities.watch(false); });
+    gulp.task('watch:dist', ['build:dist'], function() { return utilities.watch(true); });
+    gulp.task('watch:docs', ['build:docs'], function() { return; } );
 
     // PROJECT BUILDERS
     gulp.task('build',          function(cb) { return build.build(false, cb); });
@@ -59,5 +59,5 @@
     // UTILITIES
     gulp.task('clean',          function() { return utilities.clean(false); });
     gulp.task('clean:dist',     function() { return utilities.clean(true); });
-    gulp.task('gendocs',        function() { return utilities.gendocs(); });
+    gulp.task('build:docs',     function() { return utilities.gendocs(); });
 })();

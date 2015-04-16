@@ -16,6 +16,16 @@
             dist: 8081,
             docs: 8082
         },
+        loadPlugins: {
+            lazy: false,
+            pattern: [
+                'gulp-*', 'run-sequence', 'browser-sync', 'main-bower-files',
+                'uglify-save-license', 'del', 'yargs', 'event-stream', 'stream-series'
+            ]
+        },
+        jshint: {
+            verbose: true
+        },
         paths: {
             root: srcRoot,
             app: appRoot,
@@ -44,19 +54,6 @@
             e2e: 'e2e/',
             e2eSrc: 'test/e2e/src/*.js',
             e2eDist: 'test/e2e/dist/'
-        },
-        jshint: {
-            verbose: true
-        },
-        onerror: function(title) {
-            return function(err) {
-                gutil.log(gutil.colors.red('[' + title + ']'), err.toString());
-                this.emit('end');
-            };
-        },
-        wiredep: {
-            directory: 'bower_components',
-            exclude: [/foundation\.js/, /foundation\.css/]
         }
     };
 })();
