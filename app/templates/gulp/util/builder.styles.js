@@ -26,7 +26,7 @@
     }
 
     var minifyChannel = lazypipe()
-        .pipe(plugins.minifyCss())
+        .pipe(plugins.minifyCss)
         .pipe(plugins.concat, 'main.css')
         .pipe(plugins.rev);
 
