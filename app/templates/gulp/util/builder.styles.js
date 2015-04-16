@@ -2,6 +2,7 @@
     'use strict';
 
     var gulp = require('gulp'),
+        lazypipe = require('lazypipe'),
         utilities = require('./utilities'),
         options = require('./options'),
         plugins = require('gulp-load-plugins')(options.loadPlugins);
@@ -24,10 +25,17 @@
         );
     }
 
+    var minifyChannel = lazypipe()
+        .pipe(plugins.csso)
+        .pipe(plugins.concat, 'main.css')
+        .pipe(plugins.rev);
+
     module.exports = {
-        sass: function (isDist) {
+        styles: function (isDist) {
             var dest = rootPath(isDist),
-                sassFilter = plugins.filter('**/*.{scss,sass}');
+                mainFilter = plugins.filter('**/main.scss'),
+                sassFilter = plugins.filter('**/*.{scss,sass}'),
+                partials = gulp.src(options.paths.app + '**/_*.{scss,sass}', { base: options.paths.root });
 
             var pipeline = plugins.streamSeries(
                     // Order matters
@@ -36,28 +44,36 @@
                     gulp.src(options.paths.assets + '**/*.{scss,sass,css}', { base: options.paths.root }),
                     gulp.src(options.paths.app + '**/*.{scss,sass,css}', { base: options.paths.root })
                 )
-                .pipe(plugins.plumber(onError));
-            if (isDist) {
-                pipeline = pipeline
-                    // Only run SASS on SASS files
-                    .pipe(sassFilter)
-                    .pipe(plugins.sourcemaps.init())
-                    .pipe(plugins.sass())
-                    .pipe(plugins.minifyCss())
-                    .pipe(plugins.concat('main.css'))
-                    .pipe(plugins.rev())
-                    .pipe(plugins.sourcemaps.write(options.paths.maps))
-                    .pipe(sassFilter.restore());
-            } else {
-                pipeline = pipeline
+                .pipe(plugins.plumber(onError))
+
+                // Inject app partials
+                .pipe(mainFilter)
+                .pipe(plugins.inject(partials, {
+                    starttag: '// inject:{{ext}}',
+                    endtag: '// endinject',
+                    relative: true,
+                    transform: function (filepath) {
+                        return '@import "' + filepath + '";';
+                    }
+                }))
+                .pipe(mainFilter.restore())
+
+                // Record sourcemaps
+                .pipe(plugins.sourcemaps.init())
+
+                    // Perform sass operations
                     .pipe(sassFilter)
                     .pipe(plugins.sass().on('error', onError))
-                    .pipe(sassFilter.restore());
-            }
+                    .pipe(sassFilter.restore())
 
-            pipeline = pipeline
+                    // Minify CSS
+                    .pipe(plugins.if(isDist, minifyChannel()))
+
+                // Write out sourcemaps
+                .pipe(plugins.sourcemaps.write(options.paths.maps))
+
                 .pipe(gulp.dest(dest))
-                .pipe(plugins.size({ title: 'Sass: ' + dest }));
+                .pipe(plugins.size({ title: 'Styles: ' + dest }));
 
             return pipeline;
         }

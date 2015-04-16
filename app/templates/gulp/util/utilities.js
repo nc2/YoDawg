@@ -65,7 +65,7 @@
                 paths = {
                     index: root + '**/index.html',
                     js: root + '**/*.js',
-                    sass: root + '**/*.scss',
+                    styles: root + '**/*.{scss,sass,css}',
                     templates: options.paths.app + '**/*.html'
                 };
 
@@ -74,9 +74,9 @@
                 plugins.runSequence( 'html'+ext, reload );
             });
 
-            // Sass
-            plugins.watch(paths.sass, function () {
-                plugins.runSequence( 'sass'+ext, reload );
+            // Styles
+            plugins.watch(paths.styles, function () {
+                plugins.runSequence( 'styles'+ext, reload );
             });
 
             // Scripts

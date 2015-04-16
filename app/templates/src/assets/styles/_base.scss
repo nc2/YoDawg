@@ -1,0 +1,13 @@
+body {
+    font: 100% $font-stack;
+    color: $font-color;
+}
+
+.box { @include border-radius(10px); }
+
+a {
+    color: $color-primary;
+    &:hover {
+        $color-primary;
+    }
+}
