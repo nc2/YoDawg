@@ -14,10 +14,10 @@
     opacity: 0;
 }
 
-    .shuffle-animation.ng-enter.ng-enter-active {
-        left: 0;
-        opacity: 1;
-    }
+.shuffle-animation.ng-enter.ng-enter-active {
+    left: 0;
+    opacity: 1;
+}
 
 .shuffle-animation.ng-leave {
     -moz-transition: 0.3s ease-out all;
@@ -28,8 +28,8 @@
     opacity: 1;
 }
 
-    .shuffle-animation.ng-leave.ng-leave-active {
-        left: 2em;
-        opacity: 0;
-    }
+.shuffle-animation.ng-leave.ng-leave-active {
+    left: 2em;
+    opacity: 0;
+}
 /*#endregion*/
