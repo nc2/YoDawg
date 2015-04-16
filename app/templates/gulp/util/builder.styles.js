@@ -31,7 +31,7 @@
         .pipe(plugins.rev);
 
     module.exports = {
-        sass: function (isDist) {
+        styles: function (isDist) {
             var dest = rootPath(isDist),
                 mainFilter = plugins.filter('**/main.scss'),
                 sassFilter = plugins.filter('**/*.{scss,sass}'),

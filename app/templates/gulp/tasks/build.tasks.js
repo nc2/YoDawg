@@ -10,7 +10,7 @@
         htmlBuilder = require('../util/builder.html'),
         appScriptBuilder = require('../util/builder.script.app'),
         vendorScriptBuilder = require('../util/builder.script.vendor'),
-        sassBuilder = require('../util/builder.sass');
+        stylesBuilder = require('../util/builder.styles');
 
     // TASK RUNNERS
     gulp.task('default', ['serve']);
@@ -43,8 +43,8 @@
     gulp.task('serve:dist', ['watch:dist'], function(d) { return serve.serve(options.browserPorts.dist, options.paths.dist, d); });
 
     // STYLES BUILDERS
-    gulp.task('sass',           function() { return sassBuilder.sass(false); });
-    gulp.task('sass:dist',      function() { return sassBuilder.sass(true); });
+    gulp.task('styles',         function() { return stylesBuilder.styles(false); });
+    gulp.task('styles:dist',    function() { return stylesBuilder.styles(true); });
 
     // VIEW BUILDERS
     gulp.task('fonts',          function() { return htmlBuilder.fonts(false); });
