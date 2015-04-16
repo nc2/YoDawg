@@ -50,7 +50,7 @@
         return plugins.streamSeries(
             gulp.src(dest + 'bower_components/**/*.css', { read: false }),
             gulp.src(dest + 'assets/styles/**/*.css', { read: false }),
-            gulp.src(dest + 'app/**/*.scss', { read: false })
+            gulp.src(dest + 'app/**/*.css', { read: false })
         );
     };
 
@@ -58,7 +58,7 @@
         // Order matters here. Import global styles before others.
         return plugins.streamSeries(
             gulp.src(dest + 'assets/styles/**/*.css', { read: false }),
-            gulp.src(dest + 'app/**/*.scss', { read: false })
+            gulp.src(dest + 'app/**/*.css', { read: false })
         );
     };
 
