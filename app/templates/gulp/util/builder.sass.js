@@ -42,7 +42,6 @@
                     // Only run SASS on SASS files
                     .pipe(sassFilter)
                     .pipe(plugins.sourcemaps.init())
-                    .pipe(plugins.notify('file: <%= file.relative %>'))
                     .pipe(plugins.sass())
                     .pipe(plugins.minifyCss())
                     .pipe(plugins.concat('main.css'))

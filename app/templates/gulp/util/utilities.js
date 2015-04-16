@@ -18,9 +18,17 @@
         return (isDist) ? [options.paths.dist, options.paths.docs] : options.paths.local;
     }
 
+    function onLog(title, msg) {
+        console.log(
+            '\r\n' +
+            plugins.util.colors.green(' ' + title + ' ') + '\r\n' +
+            plugins.util.colors.grey(msg) + '\r\n'
+        );
+    }
+
     function onError(title, err) {
         console.log(
-            '\r\n' + 
+            '\r\n' +
             plugins.util.colors.white.bgRed(' ' + title + ' ') + '\r\n' +
             plugins.util.colors.cyan(err.message) + '\r\n' +
             plugins.util.colors.grey(err.fileName + ':' + err.lineNumber) + '\r\n'
@@ -29,16 +37,7 @@
 
     module.exports = {
         logError: onError,
-        log: function log(msg) {
-            var blue = plugins.util.colors.cyan;
-            if (_.isObject(msg)) {
-                _.forOwn(msg, function (value) {
-                    plugins.util.log(blue(value));
-                });
-            } else {
-                plugins.util.log(blue(msg));
-            }
-        },
+        log: onLog,
         clean: function (isDist) {
             var path = rootPath(isDist);
             return gulp.src(path)

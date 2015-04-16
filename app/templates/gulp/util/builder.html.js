@@ -18,22 +18,22 @@
     function onError(err) {
         utilities.logError( '[html]', err );
         this.emit('end');
-    }
+    };
 
     function rootPath(isDist) {
         return (isDist) ? options.paths.dist : options.paths.local;
-    }
+    };
 
     function destPath(isDist, path) {
         return rootPath(isDist) + path;
-    }
+    };
 
     function jsDist(dest) {
         return plugins.streamSeries(
             gulp.src(dest + 'vendor/**/*.js', { read: true }),
             gulp.src(dest + 'app/**/*.js', { read: true }).pipe(plugins.angularFilesort())
         );
-    }
+    };
 
     function jsLocal(dest) {
         return plugins.streamSeries(
@@ -43,20 +43,28 @@
             gulp.src(dest + 'app/**/*.js', { read: true })
                 .pipe(plugins.angularFilesort())
         );
-    }
+    };
 
-    function css(dest) {
+    function cssDist(dest) {
         // Order matters here. Import global styles before others.
         return plugins.streamSeries(
             gulp.src(dest + 'bower_components/**/*.css', { read: false }),
             gulp.src(dest + 'assets/styles/**/*.css', { read: false }),
             gulp.src(dest + 'app/**/*.scss', { read: false })
         );
-    }
+    };
+
+    function cssLocal(dest) {
+        // Order matters here. Import global styles before others.
+        return plugins.streamSeries(
+            gulp.src(dest + 'assets/styles/**/*.css', { read: false }),
+            gulp.src(dest + 'app/**/*.scss', { read: false })
+        );
+    };
 
     function bower() {
         return gulp.src(plugins.mainBowerFiles(), { read: false });
-    }
+    };
 
     module.exports = {
         html: function(isDist) {
@@ -74,7 +82,7 @@
                 pipeline = pipeline
                     .pipe(plugins.inject(bower(), { name: 'bower' }))
                     .pipe(plugins.inject(jsLocal(dest), { ignorePath: dest }))
-                    .pipe(plugins.inject(css(dest), { ignorePath: dest }))
+                    .pipe(plugins.inject(cssLocal(dest), { ignorePath: dest }))
             }
             pipeline = pipeline
                 .pipe(gulp.dest(dest))
