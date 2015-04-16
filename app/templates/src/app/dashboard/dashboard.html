@@ -1,71 +1,56 @@
-<section id="dashboard-view" class="mainbar">
-    <section class="matter">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-12">
-                    <ul class="today-datas">
-                        <li class="blightblue">
-                            <div class="pull-left"><i class="fa fa-plane"></i></div>
-                            <div class="datas-text pull-right">
-                                <span class="bold">May 18 - 19, 2015</span> Castle Resort, Neverland
-                            </div>
-                            <div class="clearfix"></div>
-                        </li>
-
-                        <li class="borange">
-                            <div class="pull-left"><i class="fa fa-envelope"></i></div>
-                            <div class="datas-text pull-right">
-                                <span class="bold">{{vm.messageCount}}</span> Messages
-                            </div>
-                            <div class="clearfix"></div>
-                        </li>
-
-                    </ul>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="widget wviolet">
-                        <div ht-widget-header title="People"
-                             allow-collapse="true"></div>
-                        <div class="widget-content text-center text-info">
-                            <table class="table table-condensed table-striped">
-                                <thead>
-                                    <tr>
-                                        <th>First Name</th>
-                                        <th>Last Name</th>
-                                        <th>Age</th>
-                                        <th>Location</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr ng-repeat="p in vm.people">
-                                        <td>{{p.firstName}}</td>
-                                        <td>{{p.lastName}}</td>
-                                        <td>{{p.age}}</td>
-                                        <td>{{p.location}}</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                        <div class="widget-foot">
-                            <div class="clearfix"></div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="widget wgreen">
-                        <div ht-widget-header title="{{vm.news.title}}"
-                             allow-collapse="true"></div>
-                        <div class="widget-content text-center text-info">
-                            <small>{{vm.news.description}}</small>
-                        </div>
-                        <div class="widget-foot">
-                            <div class="clearfix"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+<section class="dashboard" ng-controller="DashboardController as vm">
+    <div class="columns small-12 dashboard_header text-center">
+        <h1>Yo Dawg!</h1>
+        <h2 class="light-weight">Black Bar Labs' Inaugural SPA generator.</h2>
+    </div>
+    <div class="row">
+        <div class="columns large-4">
+            <ul class="pricing-table">
+                <li class="title">Structural</li>
+                <li class="description"><h6 class="subheader">Scaffold Your App</h6></li>
+                <li ng-repeat="structure in vm.generators.structure" class="bullet-item">{{structure}}</li>
+            </ul>
         </div>
-    </section>
+        <div class="columns large-4">
+            <ul class="pricing-table">
+                <li class="title">Front-End</li>
+                <li class="description"><h6 class="subheader">Pimp Your App</h6></li>
+                <li ng-repeat="frontend in vm.generators.frontend" class="bullet-item">{{frontend}}</li>
+            </ul>
+        </div>
+        <div class="columns large-4">
+            <ul class="pricing-table">
+                <li class="title">Service</li>
+                <li class="description"><h6 class="subheader">Data-fi Your App</h6></li>
+                <li ng-repeat="service in vm.generators.service" class="bullet-item">{{service}}</li>
+            </ul>
+        </div>
+    </div>
+    <div class="row">
+        <div class="columns large-12">
+            <h3>Usage</h3>
+        </div>
+    </div>
+    <div class="row">
+        <div class="columns large-6">
+            <h4>Module:</h4>
+            <p>Creates a new module for application code to reside and wires it up to the root app module.</p>
+            <h5>Command</h5>
+            <pre>yo dawg:module namedModule</pre>
+            <h5>Produces</h5>
+            <pre>src/app/core/named.module.js</pre>
+            <pre>src/app/core/named.module.spec.js</pre>
+        </div>
+        <div class="columns large-6">
+            <h4>Controller:</h4>
+            <p>Generates a new application controller.</p>
+            <h5>Command:</h5>
+            <pre>yo dawg:controller namedController</pre>
+            <h5>Prompts You:</h5>
+            <pre>Which module?: app.core</pre>
+            <h5>Produces:</h5>
+            <pre>src/app/core/named.controller.js</pre>
+            <pre>src/app/core/named.controller.spec.js</pre>
+        </div>
+    </div>
 </section>

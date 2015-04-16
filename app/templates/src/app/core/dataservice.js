@@ -9,19 +9,31 @@
     /* @ngInject */
     function dataservice($http, $q, logger) {
         var service = {
-            getPeople: getPeople,
-            getMessageCount: getMessageCount
+            getGeneratorList: getGeneratorList
         };
 
         return service;
 
-        function getMessageCount() { return $q.when(72); }
-
-        function getPeople() {
-          return $q.when([{
-              firstName: 'JD',
-              lastName: 'Courtoy'
-          }]);
+        function getGeneratorList() {
+          return $q.when({
+            'structure' : [
+                'dawg:app',
+                'dawg:module'
+            ],
+            'frontend' : [
+                'dawg:controller',
+                'dawg:directive',
+                //'dawg:filter',
+                //'dawg:decorator'
+            ],
+            'service' : [
+                //'dawg:provider',
+                'dawg:factory',
+                'dawg:service',
+                //'dawg:constant',
+                //'dawg:value'
+            ]
+          });
         }
     }
 })();
