@@ -1,0 +1,6 @@
+body {
+    font: 100% $font-stack;
+    color: $primary-color;
+}
+
+.box { @include border-radius(10px); }

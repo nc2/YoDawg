@@ -1,8 +1,7 @@
-body {
-    background-color: white;
-    color: blue;
-    div {
-        color: red;
-        font-weight: bold;
-    }
-}
+// Globals
+@import "_variables";
+@import "_mixins";
+@import "_base";
+
+// inject:scss
+// endinject
