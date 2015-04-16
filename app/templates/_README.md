@@ -67,7 +67,6 @@ app --> [
         app.admin,
         app.dashboard,
         app.layout,
-        app.widgets,
 		app.core --> [
 			ngAnimate,
 			ngSanitize,
