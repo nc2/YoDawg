@@ -16,13 +16,16 @@
   };
 
   Generator.prototype.writing = function writing () {
-    this.createCodeFile('controller', 'js');
-    this.createUnitTest('controller', 'js');
+      // assign a template url
+      this.templateUrl = this.moduleDir(this.module) + '/' + utils.hyphenName(this.name) + '.html';
+      this.createSimpleFile('directive', 'html');
+      this.createCodeFile('directive', 'js');
+      this.createUnitTest('directive', 'js');
   };
 
   function normalizeName (name) {
       if (!name) return;
-      return utils.upperName(name.replace(/controller|ctrl$/i, '') + 'Controller');
+      return utils.upperName(name.replace(/directive$/i, ''));
   }
 
 }());

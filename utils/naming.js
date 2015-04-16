@@ -8,10 +8,6 @@ exports.hyphenName = function hyphenName (name) {
   return _.slugify(_.humanize(name));
 };
 
-exports.lowerName = function lowerName (name) {
-  return _.humanize(name).toLowerCase();
-};
-
 exports.lowerCamelName = function lowerCamelName (name) {
   return _.camelize(_.slugify(_.humanize(name)));
 };
@@ -27,4 +23,16 @@ exports.stripNamespace = function stripNamespace (name) {
 exports.stripAngularTypes = function stripAngularTypes (name) {
   var re = /controller|ctrl|provider|factory$/i
   return name.replace(re, '');
+};
+
+exports.moduleName = function moduleName (name) {
+    if (!name || name.legth <= 0) {
+        return name;
+    }
+
+    // strip off trailing slashes
+    var lastChar = name.charAt(name.length - 1);
+    return (lastChar === '/' || lastChar === '\\')
+        ? name.slice(0, name.length - 1)
+        : name;
 };

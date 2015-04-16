@@ -28,7 +28,7 @@ exports.permuteFiles = function permuteFiles (conventions, extensions, rootPath)
 };
 
 exports.findModuleFile = function findModuleFile (modulePath) {
-  var conventions = ['-module', ''];
+  var conventions = ['.module', ''];
   if (_.isArray(modulePath)) {
     for (var i = 0; i < modulePath.length; i++) {
       var found = findFile(modulePath[i], conventions);

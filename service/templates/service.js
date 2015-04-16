@@ -3,13 +3,13 @@
 
   /**
    * @ngdoc service
-   * @name <%= utils.lowerName(module) %>.factory:<%= utils.upperName(name) %>
+   * @name <%= module %>.factory:<%= utils.upperName(name) %>
    *
    * @description
    *
    */
   angular
-    .module('<%= utils.lowerName(module) %>')
+    .module('<%= module %>')
     .service('<%= utils.upperName(name) %>', <%= utils.upperName(name) %>);
 
   /* @ngInject */
