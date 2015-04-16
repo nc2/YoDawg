@@ -9,6 +9,9 @@
     /* @ngInject */
     function ShellController($rootScope, $timeout, config, logger) {
         var vm = this;
+        vm.navline = {
+            title: config.appTitle
+        };
 
         activate();
 
