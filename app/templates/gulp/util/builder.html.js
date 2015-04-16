@@ -51,7 +51,7 @@
     function cssLocal(dest) {
         return plugins.streamSeries(
             // Order matters here. Import global styles before others.
-            gulp.src(dest + 'assets/styles/**/*.css', { read: false }),
+            gulp.src(dest + 'assets/**/*.css', { read: false }),
             gulp.src(dest + 'app/**/*.scss', { read: false })
         );
     }
