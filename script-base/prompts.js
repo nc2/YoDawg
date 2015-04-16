@@ -31,7 +31,7 @@ module.exports = function (Generator) {
         self.ask({
             validate: validate,
             type: 'input',
-            message: 'Which module is this for?',
+            message: 'Yo, what module dis fo?',
             default: name || self.config.get('lastModule') || 'app.myModule'
         }, function (module) {
             self.module = utils.moduleName(module);
@@ -61,7 +61,7 @@ module.exports = function (Generator) {
         self.ask({
             validate: validate,
             type: 'input',
-            message: 'What do you want to call it?',
+            message: 'Yo, what this called?',
             default: name || 'dawg'
         }, function (value) {
             self.name = transform(value);

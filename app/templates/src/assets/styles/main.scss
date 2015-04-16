@@ -1,3 +1,8 @@
-// General
-@import "base";
-@import "animations";
+// Globals
+@import "_variables";
+@import "_mixins";
+@import "_base";
+@import "_animations";
+
+// inject:scss
+// endinject

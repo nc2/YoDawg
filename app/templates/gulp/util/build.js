@@ -10,7 +10,7 @@
                 'clean' + mode,
                 [
                     'js' + mode,
-                    'sass' + mode,
+                    'styles' + mode,
                     'fonts' + mode,
                     'images' + mode,
                     'templates' + mode

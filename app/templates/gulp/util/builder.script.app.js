@@ -2,17 +2,15 @@
     'use strict';
 
     var gulp = require('gulp'),
-        plugins = require('gulp-load-plugins')({
-            lazy: false, pattern: ['gulp-*', 'main-bower-files', 'uglify-save-license', 'del', 'stream-series']
-        }),
-        options = require('./options');
+        options = require('./options'),
+        plugins = require('gulp-load-plugins')(options.loadPlugins);
 
     function rootPath(isDist) {
         return (isDist) ? options.paths.dist : options.paths.local;
     }
 
     function onError(err) {
-        console.log(err);
+        utilities.logError( '[app.js]', err );
         this.emit('end');
     }
 

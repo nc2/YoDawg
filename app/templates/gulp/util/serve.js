@@ -1,8 +1,7 @@
 (function() {
     'use strict';
 
-    var runSequence = require('run-sequence'),
-        browserSync = require('browser-sync');
+    var browserSync = require('browser-sync');
 
     module.exports = {
         serve: function (port, dir, done) {
