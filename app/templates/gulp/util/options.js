@@ -19,8 +19,8 @@
         loadPlugins: {
             lazy: false,
             pattern: [
-                'gulp-*', 'run-sequence', 'browser-sync', 'main-bower-files',
-                'uglify-save-license', 'del', 'yargs', 'event-stream', 'stream-series'
+                'gulp-*', 'browser-sync', 'del', 'event-stream', 'lazypipe', 'main-bower-files',
+                'run-sequence', 'stream-series', 'uglify-save-license', 'yargs'
             ]
         },
         jshint: {
