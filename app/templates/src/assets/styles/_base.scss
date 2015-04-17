@@ -1,17 +1,26 @@
 body {
     font: 100% $font-stack;
     color: $font-color;
+    background-color: $color-grey;
 }
 
 .box { @include border-radius(10px); }
 
 a {
-    color: $color-primary;
+    color: $color-green;
     &:hover {
-        color: $color-primary;
+        color: $color-green;
     }
 }
 
 .light-weight {
     font-weight: 300;
+}
+
+.paper-box {
+    padding: 20px;
+    background-color: $color-white;
+    border-radius: 5px;
+    overflow: hidden;
+    border: 1px solid $color-dark-grey;
 }

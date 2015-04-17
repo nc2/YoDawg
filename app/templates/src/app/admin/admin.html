@@ -1,9 +1,73 @@
-<section class="admin">
-    <div class="row">
+<section class="admin" ng-controller="AdminController as admin">
+    <div class="columns large-6">
+        <img interchange="[assets/images/ostrichSmall.jpg, (small)],
+                          [assets/images/ostrichMed.jpg, (large)],
+                          [assets/images/ostrichLarge.jpg, (large)]"
+             src="assets/img/ostrichSmall.jpg" alt="Ostrich">
+    </div>
+    <div class="columns large-6 admin_contact-form">
         <div>
-            <div>
-                <h3>TODO: Implement Your Features</h3>
-            </div>
+            <h3 class="admin_contact-header">Send us a message</h3>
         </div>
+        <form  ng-submit="admin.submitContact()">
+            <div class="row">
+                <div class="large-6 columns">
+                    <label>Name
+                        <input type="text" class="radius" ng-model="admin.contactForm.name" />
+                    </label>
+                    <label>Email
+                        <input type="email" class="radius" ng-model="admin.contactForm.email"/>
+                    </label>
+                    <label>Website
+                        <input type="text" class="radius" ng-model="admin.contactForm.website"/>
+                    </label>
+                </div>
+                <div class="large-6 columns">
+                    <label>Subject
+                        <input type="text" class="radius" ng-model="admin.contactForm.subject"/>
+                    </label>
+                    <label>Message
+                        <textarea rows="7" class="radius" ng-model="admin.contactForm.message"></textarea>
+                    </label>
+                </div>
+                <div class="large-12 columns">
+                    <label>Are you..?</label>
+                    <input id="So-so" type="radio" ng-model="admin.contactForm.skill" value="So-so">
+                        <label for="So-so">So-so</label>
+                    <input id="Awesome" type="radio" ng-model="admin.contactForm.skill" value="awesome">
+                        <label for="Awesome">Awesome</label>
+                    <input id="egotistical" type="radio" ng-model="admin.contactForm.skill" value="egotistical">
+                        <label for="egotistical">Out of this world!!</label>
+                    <input id="terrible" type="radio" ng-model="admin.contactForm.skill" value="terrible">
+                        <label for="terrible">Terrible</label>
+                </div>
+                <div class="large-12 columns">
+                    <label>At the Following...
+                        <select class="radius" ng-model="admin.contactForm.activity">
+                            <option value="singing">Singing</option>
+                            <option value="dancing">Dancing</option>
+                            <option value="computing">Computing</option>
+                            <option value="watching tv">Watching TV</option>
+                        </select>
+                    </label>
+                </div>
+                <div class="admin_contact-form_button">
+                    <input type="submit" value="Submit" role="button" aria-label="submit form" class="button small radius">
+                </div>
+            </div>
+        </form>
+    </div>
+    <div>
+        <h5 class="subheader text-center">Check out your instant, organic, antibiotic-free response here:</h5>
+        <section class="columns large-4 large-offset-4 paper-box">
+            <pre>Dear {{admin.contactForm.name}},</pre>
+            <pre>We checked out your website({{admin.contactForm.website}}),</pre>
+            <pre>we also care alot about {{admin.contactForm.subject}}.</pre>
+            <pre>You are {{admin.contactForm.skill}} at {{admin.contactForm.activity}}.</pre>
+            <pre>We will be in touch, watch your email: {{admin.contactForm.email}}.</pre>
+            <pre>With Love,</pre>
+            <pre>Black Bar Labs</pre>
+        </section>
+        <div class="columns large-4"></div>
     </div>
 </section>

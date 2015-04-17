@@ -8,8 +8,14 @@
     AdminController.$inject = ['logger'];
     /* @ngInject */
     function AdminController(logger) {
-        var vm = this;
-        vm.title = 'Admin';
+        var admin = this;
+        admin.title = 'Admin';
+        admin.contactForm = {};
+
+        admin.submitContact = function() {
+            console.log('awesome');
+            logger.success('Way to go!');
+        };
 
         activate();
 
