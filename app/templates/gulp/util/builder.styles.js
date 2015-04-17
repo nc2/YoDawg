@@ -2,18 +2,20 @@
     'use strict';
 
     var gulp = require('gulp'),
-        lazypipe = require('lazypipe'),
-        utilities = require('./utilities'),
+        pipes = require('./pipes'),
         options = require('./options'),
-        plugins = require('gulp-load-plugins')(options.loadPlugins);
+        plugins = require('gulp-load-plugins')(options.loadPlugins),
+        partialOpts = {
+            starttag: '// inject:{{ext}}',
+            endtag: '// endinject',
+            relative: true,
+            transform: function (filepath) {
+                return '@import "' + filepath + '";';
+            }
+        };
 
     function rootPath(isDist) {
         return (isDist) ? options.paths.dist : options.paths.local;
-    }
-
-    function onError(err) {
-        utilities.logError( '[sass]', err );
-        this.emit('end');
     }
 
     function bowerStyles () {
@@ -25,11 +27,6 @@
         );
     }
 
-    var minifyChannel = lazypipe()
-        .pipe(plugins.minifyCss)
-        .pipe(plugins.concat, 'main.css')
-        .pipe(plugins.rev);
-
     module.exports = {
         styles: function (isDist) {
             var dest = rootPath(isDist),
@@ -37,45 +34,34 @@
                 sassFilter = plugins.filter('**/*.{scss,sass}'),
                 partials = gulp.src(options.paths.app + '**/_*.{scss,sass}', { base: options.paths.root });
 
-            var pipeline = plugins.streamSeries(
+            return plugins.streamSeries(
                     // Order matters
                     gulp.src(bowerStyles(), { base: './' }), // Include the bower_components folder in dest
                     gulp.src(options.paths.vendor + '**/*.{scss,sass,css}', { base: options.paths.root }),
                     gulp.src(options.paths.assets + '**/*.{scss,sass,css}', { base: options.paths.root }),
                     gulp.src(options.paths.app + '**/*.{scss,sass,css}', { base: options.paths.root })
                 )
-                .pipe(plugins.plumber(onError))
+                .pipe(pipes.tools.plumber())
 
                 // Inject app partials
                 .pipe(mainFilter)
-                .pipe(plugins.inject(partials, {
-                    starttag: '// inject:{{ext}}',
-                    endtag: '// endinject',
-                    relative: true,
-                    transform: function (filepath) {
-                        return '@import "' + filepath + '";';
-                    }
-                }))
+                .pipe(plugins.inject(partials, partialOpts))
                 .pipe(mainFilter.restore())
 
                 // Record sourcemaps
                 .pipe(plugins.sourcemaps.init())
 
-                    // Perform sass operations
+                    // Compile SASS and minify if dist build
                     .pipe(sassFilter)
-                    .pipe(plugins.sass().on('error', onError))
+                    .pipe(plugins.sass())
+                    .pipe(plugins.if(isDist, pipes.styles.minify()))
                     .pipe(sassFilter.restore())
-
-                    // Minify CSS
-                    .pipe(plugins.if(isDist, minifyChannel()))
 
                 // Write out sourcemaps
                 .pipe(plugins.sourcemaps.write(options.paths.maps))
 
                 .pipe(gulp.dest(dest))
-                .pipe(plugins.size({ title: 'Styles: ' + dest }));
-
-            return pipeline;
+                .pipe(plugins.size({ title: ' Styles ', showFiles: true }));
         }
     };
 })();

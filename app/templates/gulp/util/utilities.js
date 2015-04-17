@@ -4,15 +4,9 @@
     var gulp = require('gulp'),
         options = require('./options'),
         plugins = require('gulp-load-plugins')(options.loadPlugins),
-        _ = require('lodash'),
         reload = plugins.browserSync.reload,
         del = require('del'),
         vinylPaths = require('vinyl-paths');
-
-    function reportChange(event) {
-        var srcPattern = new RegExp('/.*(?=/' + options.paths.root + ')/');
-        log('File: ' + event.path.replace(srcPattern, '') + ' ' + event.type);
-    }
 
     function rootPath(isDist) {
         return (isDist) ? [options.paths.dist, options.paths.docs] : options.paths.local;

@@ -1,8 +1,7 @@
 (function() {
     'use strict';
 
-    var gutil = require('gulp-util'),
-        srcRoot = '<%= srcDir %>/',
+    var srcRoot = '<%= srcDir %>/',
         appRoot = '<%= appDir %>/',
         assetRoot = '<%= assetDir %>/',
         bowerRoot = 'bower_components/',
