@@ -65,22 +65,22 @@
 
             // Index
             plugins.watch(paths.index, function () {
-                plugins.runSequence( 'html'+ext, reload );
+                plugins.runSequence( 'html' + ext, reload );
             });
 
             // Styles
             plugins.watch(paths.styles, function () {
-                plugins.runSequence( 'styles'+ext, reload );
+                plugins.runSequence( 'styles' + ext, [ 'html' + ext ], reload );
             });
 
             // Scripts
             plugins.watch(paths.js, function () {
-                plugins.runSequence( 'js'+ext, reload );
+                plugins.runSequence( 'js' + ext, [ 'html' + ext, 'templates' + ext ], reload );
             });
 
             // Templates
             plugins.watch(paths.templates, function () {
-                plugins.runSequence( 'templates'+ext, reload );
+                plugins.runSequence( 'templates' + ext, [ 'html' + ext ], reload );
             });
         }
     };
