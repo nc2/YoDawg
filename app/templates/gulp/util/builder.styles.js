@@ -19,12 +19,16 @@
     }
 
     function bowerStyles () {
-        return plugins.mainBowerFiles(
-            // We only want CSS and fonts included.
-            // SASS should be included by a project SASS file instead so that
-            // variables can be changed within the project.
-            { filter: '**/*.{css,eot,svg,ttf,woff,woff2,map}' }
-        );
+        // We only want CSS and fonts included.
+        // SASS should be included by a project SASS file instead so that
+        // variables can be changed within the project.
+        // Exclude Foundation because we are using a custom SCSS override.
+        return plugins.mainBowerFiles({
+            filter: [
+                '**/*.{css,eot,svg,ttf,woff,woff2,map}',
+                '!**/{foundation,foundation/**}'
+            ]
+        });
     }
 
     module.exports = {

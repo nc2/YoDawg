@@ -7,9 +7,22 @@
         plugins = require('gulp-load-plugins')(options.loadPlugins),
 
     // Pipe functions used in the lazy pipes below.
-    bower = function() {
+    bowerJs = function() {
         return plugins.inject(
             gulp.src(plugins.mainBowerFiles(), { read: false }),
+            { name: 'bower' }
+        );
+    },
+    bowerCss = function() {
+        return plugins.inject(
+            gulp.src(
+                plugins.mainBowerFiles({
+                    filter: [
+                        '**/*.{css,eot,svg,ttf,woff,woff2,map}',
+                        '!**/{foundation,foundation/**}'
+                    ]
+                }), { read: false }
+            ),
             { name: 'bower' }
         );
     },
@@ -54,7 +67,8 @@
                 .pipe(css, true),
                 //.pipe(plugins.minifyHtml, { empty: true, spare: true, quotes: true }),
             local: plugins.lazypipe()
-                .pipe(bower)
+                .pipe(bowerJs)
+                .pipe(bowerCss)
                 .pipe(js, false)
                 .pipe(css, false)
         },
