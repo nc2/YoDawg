@@ -20,7 +20,9 @@
 
         /* @ngInject */
         function TopNavController() {
-            var vm = this;
+            /* jshint -W098 */
+            var vm = this; // jshint ignore:line
+            /* jshint +W098 */
         }
 
         return directive;
