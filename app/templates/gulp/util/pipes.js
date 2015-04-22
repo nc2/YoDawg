@@ -10,7 +10,7 @@
     bowerJs = function() {
         return plugins.inject(
             gulp.src(plugins.mainBowerFiles(), { read: false }),
-            { name: 'bower' }
+            { name: 'bower', addRootSlash: false }
         );
     },
     bowerCss = function() {
@@ -23,7 +23,7 @@
                     ]
                 }), { read: false }
             ),
-            { name: 'bower' }
+            { name: 'bower', addRootSlash: false }
         );
     },
     css = function(isDist) {
@@ -33,26 +33,26 @@
             dest = options.paths.dist;
         }
         return plugins.inject(plugins.streamSeries(
-            gulp.src(dest + 'assets/styles/**/*.css', { read: false }),
-            gulp.src(dest + 'app/**/*.css', { read: false })
-        ), { ignorePath: dest });
+            gulp.src('assets/**/*.css', { read: false, cwd: dest }),
+            gulp.src('app/**/*.css', { read: false, cwd: dest })
+        ), { addRootSlash: false });
     },
     js = function(isDist) {
         var dest = '';
         if(isDist) {
             dest = options.paths.dist;
             return plugins.inject(plugins.streamSeries(
-                gulp.src(dest + 'vendor/**/*.js', { read: true }),
-                gulp.src(dest + 'app/**/*.js', { read: true }).pipe(plugins.angularFilesort())
-            ), { ignorePath: options.paths.dist });
+                gulp.src('vendor/**/*.js', { read: true, cwd: dest }),
+                gulp.src('app/**/*.js', { read: true, cwd: dest }).pipe(plugins.angularFilesort())
+            ), { addRootSlash: false });
         } else {
             dest = options.paths.local;
             return plugins.inject(plugins.streamSeries(
-                gulp.src(dest + 'app/**/*.js', { read: true })
+                gulp.src('app/**/*.js', { read: true, cwd: dest })
                     // Angular filesort is very important to preserve correct dependency
                     // ordering. Reading the files is necessary for filesort to work correctly.
                     .pipe(plugins.angularFilesort())
-            ), { ignorePath: options.paths.local });
+            ), { addRootSlash: false });
         }
     },
     onError = function(err) {
@@ -64,8 +64,8 @@
         html: {
             dist: plugins.lazypipe()
                 .pipe(js, true)
-                .pipe(css, true),
-                //.pipe(plugins.minifyHtml, { empty: true, spare: true, quotes: true }),
+                .pipe(css, true)
+                .pipe(plugins.minifyHtml, { empty: true, spare: true, quotes: true }),
             local: plugins.lazypipe()
                 .pipe(bowerJs)
                 .pipe(bowerCss)
@@ -75,7 +75,7 @@
         scripts: {
             app: plugins.lazypipe()
                 .pipe(plugins.ngAnnotate)
-                .pipe(plugins.uglify)
+                .pipe(plugins.uglify, { mangle: false })
                 .pipe(plugins.concat, 'app.js')
                 .pipe(plugins.rev),
             vendor: plugins.lazypipe()

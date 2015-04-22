@@ -65,7 +65,7 @@
                 .pipe(plugins.sourcemaps.write(options.paths.maps))
 
                 .pipe(gulp.dest(dest))
-                .pipe(plugins.size({ title: ' Styles ', showFiles: true }));
+                .pipe(plugins.size({ title: ' Styles ', showFiles: options.preprocessors.verbose }));
         }
     };
 })();

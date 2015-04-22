@@ -35,7 +35,7 @@
                 .pipe(plugins.if( isDist , pipes.html.dist()))
                 .pipe(plugins.if( !isDist , pipes.html.local()))
                 .pipe(gulp.dest(dest))
-                .pipe(plugins.size({ title: ' Html ', showFiles: true }));
+                .pipe(plugins.size({ title: ' Html ', showFiles: options.preprocessors.verbose }));
         },
         fonts: function(isDist) {
             var fontFilter = plugins.filter('**/*.{eot,svg,ttf,woff,woff2}'),
@@ -46,7 +46,7 @@
                 .pipe(fontFilter)
                 .pipe(plugins.flatten())
                 .pipe(gulp.dest(dest + 'fonts/'))
-                .pipe(plugins.size({ title: ' Fonts ', showFiles: true }));
+                .pipe(plugins.size({ title: ' Fonts ', showFiles: options.preprocessors.verbose }));
         },
         images: function (isDist) {
             var dest = rootPath(isDist);

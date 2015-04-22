@@ -28,7 +28,7 @@
                 .pipe(plugins.if(isDist, pipes.scripts.vendor()))
                 .pipe(plugins.sourcemaps.write(options.paths.maps))
                 .pipe(gulp.dest(dest))
-                .pipe(plugins.size({ title: ' Vendor ', showFiles: true }));
+                .pipe(plugins.size({ title: ' Vendor ', showFiles: options.preprocessors.verbose }));
         }
     };
 })();

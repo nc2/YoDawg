@@ -17,8 +17,9 @@
 
             return plugins.streamSeries(gulp.src([
                     options.paths.app + '**/*.js',
-                    '!' + options.paths.app + '**/*.spec.js'
-                ]).pipe(plugins.angularFilesort()))
+                    '!**/*.spec.js'
+                ])
+                .pipe(plugins.angularFilesort()))
                 .pipe(pipes.tools.plumber())
                 .pipe(plugins.changed(dest))
                 .pipe(plugins.jshint('.jshintrc'))
@@ -27,7 +28,7 @@
                 .pipe(plugins.if(isDist, pipes.scripts.app()))
                 .pipe(plugins.sourcemaps.write(options.paths.maps))
                 .pipe(gulp.dest(dest + '/app'))
-                .pipe(plugins.size({ title: ' App ', showFiles: true }));
+                .pipe(plugins.size({ title: ' App ', showFiles: options.preprocessors.verbose }));
         }
     };
 })();

@@ -15,36 +15,40 @@
     // TASK RUNNERS
     gulp.task('default', ['serve']);
 
-    gulp.task('js', ['app.js','vendor.js']);
-    gulp.task('js:dist', ['app.js:dist','vendor.js:dist']);
+    // SERVER
+    gulp.task('serve',      ['watch'],      function(d) { return serve.serve(options.browserPorts.local, options.paths.local, d); });
+    gulp.task('serve:dist', ['watch:dist'], function(d) { return serve.serve(options.browserPorts.dist, options.paths.dist, d); });
+    gulp.task('serve:docs', ['watch:docs'], function(d) { return serve.serve(options.browserPorts.docs, options.paths.docs, d); });
 
     gulp.task('watch',      ['build'],      function() { return utilities.watch(false); });
     gulp.task('watch:dist', ['build:dist'], function() { return utilities.watch(true); });
     gulp.task('watch:docs', ['build:docs'], function() { return; } );
 
     // PROJECT BUILDERS
-    gulp.task('build',          function(cb) { return build.build(false, cb); });
-    gulp.task('build:dist',     function(cb) { return build.build(true, cb); });
+    gulp.task('build',      function(cb) { return build.build(false, cb); });
+    gulp.task('build:dist', function(cb) { return build.build(true, cb); });
+    gulp.task('build:docs', function() { return utilities.gendocs(); });
 
     // RELEASE PREP
-    gulp.task('bump-version',   function() { return preRelease.bumpVersion(); });
-    gulp.task('changelog',      function(cb) { return preRelease.changeLog(cb); });
-    gulp.task('prep-release',   function(cb) { return preRelease.prepRelease(cb); });
+    gulp.task('bump-version', function() { return preRelease.bumpVersion(); });
+    gulp.task('changelog',    function(cb) { return preRelease.changeLog(cb); });
+    gulp.task('prep-release', function(cb) { return preRelease.prepRelease(cb); });
+
+    // UTILITIES
+    gulp.task('clean',      function() { return utilities.clean(false); });
+    gulp.task('clean:dist', function() { return utilities.clean(true); });
 
     // SCRIPT BUILDERS
-    gulp.task('app.js',         function() { return appScriptBuilder.app(false); });
-    gulp.task('app.js:dist',    function() { return appScriptBuilder.app(true); });
+    gulp.task('js',             ['app.js']);
+    gulp.task('js:dist',        ['app.js:dist']);
+    gulp.task('app.js',         ['vendor.js'],      function() { return appScriptBuilder.app(false); });
+    gulp.task('app.js:dist',    ['vendor.js:dist'], function() { return appScriptBuilder.app(true); });
     gulp.task('vendor.js',      function() { return vendorScriptBuilder.vendor(false); });
     gulp.task('vendor.js:dist', function() { return vendorScriptBuilder.vendor(true); });
 
-    // SERVER
-    gulp.task('serve',      ['watch'],      function(d) { return serve.serve(options.browserPorts.local, options.paths.local, d); });
-    gulp.task('serve:docs', ['watch:docs'], function(d) { return serve.serve(options.browserPorts.docs, options.paths.docs, d); });
-    gulp.task('serve:dist', ['watch:dist'], function(d) { return serve.serve(options.browserPorts.dist, options.paths.dist, d); });
-
     // STYLES BUILDERS
-    gulp.task('styles',         function() { return stylesBuilder.styles(false); });
-    gulp.task('styles:dist',    function() { return stylesBuilder.styles(true); });
+    gulp.task('styles',      function() { return stylesBuilder.styles(false); });
+    gulp.task('styles:dist', function() { return stylesBuilder.styles(true); });
 
     // VIEW BUILDERS
     gulp.task('fonts',          function() { return htmlBuilder.fonts(false); });
@@ -55,9 +59,4 @@
     gulp.task('images:dist',    function() { return htmlBuilder.images(true); });
     gulp.task('templates',      function() { return htmlBuilder.templates(false); });
     gulp.task('templates:dist', function() { return htmlBuilder.templates(true); });
-
-    // UTILITIES
-    gulp.task('clean',          function() { return utilities.clean(false); });
-    gulp.task('clean:dist',     function() { return utilities.clean(true); });
-    gulp.task('build:docs',     function() { return utilities.gendocs(); });
 })();

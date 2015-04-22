@@ -10,6 +10,32 @@
 
     module.exports = {
         module: '<%= appname %>',
+        babel: {
+          filename: '',
+          filenameRelative: '',
+          blacklist: [],
+          whitelist: [],
+          modules: '',
+          sourceMap: true,
+          sourceMapName: '',
+          sourceRoot: '',
+          moduleRoot: '',
+          moduleIds: false,
+          experimental: false,
+          format: {
+            comments: false,
+            compact: false,
+            indent: {
+              parentheses: true,
+              adjustMultilineComment: true,
+              style: "  ",
+              base: 0
+            }
+          }
+        },
+        preprocessors: {
+            verbose: false
+        },
         browserPorts: {
             local: 8080,
             dist: 8081,
@@ -47,8 +73,8 @@
             style: [
                 assetRoot + '**/*.{scss,sass,css}'
             ],
-            dist: '_dist/',
-            local: '_local/',
+            dist: '_build/',
+            local: '_build/',
             docs: '_docs/', // Uses YUI-Doc:  http://yui.github.io/yuidoc/
             e2e: 'e2e/',
             e2eSrc: 'test/e2e/src/*.js',
