@@ -22,7 +22,7 @@ Since this is a special (and private for now) generator, there are equally speci
 
 ```bash
 # clone the repository somewhere
-git clone https://bitbucket.org/nc2media/yo-dawg.git yo-dawg
+git clone https://github.com/nc2/YoDawg.git yo-dawg
 
 # link the repository in NPM
 cd yo-dawg && npm link
