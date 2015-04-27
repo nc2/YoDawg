@@ -23,7 +23,7 @@
                 .pipe(pipes.tools.plumber())
                 .pipe(plugins.changed(dest))
                 .pipe(plugins.jshint('.jshintrc'))
-                .pipe(plugins.jshint.reporter('jshint-stylish', { verbose: true }))
+                .pipe(plugins.jshint.reporter('jshint-stylish', { verbose: options.jshint.verbose }))
                 .pipe(plugins.sourcemaps.init())
                 .pipe(plugins.if(isDist, pipes.scripts.app()))
                 .pipe(plugins.sourcemaps.write(options.paths.maps))

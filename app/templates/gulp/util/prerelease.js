@@ -7,19 +7,20 @@
         fs = require('fs'),
         runSequence = require('run-sequence'),
         changelog = require('conventional-changelog'),
-        argv = plugins.yargs.argv,
-        validBumpTypes = 'major|minor|patch|prerelease'.split('|'),
-        bump = (argv.bump || 'patch').toLowerCase();
-
-    if(validBumpTypes.indexOf(bump) === -1) {
-      throw new Error('Unrecognized bump "' + bump + '".');
-    }
+        argv = plugins.yargs.argv;
 
     module.exports = {
         // Runs any independent
         bumpVersion: function () {
+            var bumpTypes = 'major|minor|patch|prerelease'.split('|'),
+            type = (argv.type || 'patch').toLowerCase();
+
+            if(bumpTypes.indexOf(type) === -1) {
+              throw new Error('Unrecognized bump type "' + type + '".');
+            }
+            
             return gulp.src(['./package.json'])
-                .pipe(plugins.bump({ type:bump })) //major|minor|patch|prerelease
+                .pipe(plugins.bump({ type:type })) //major|minor|patch|prerelease
                 .pipe(gulp.dest('./'));
         },
         changeLog: function (callback) {
@@ -34,8 +35,8 @@
         },
         prepRelease: function (callback) {
             return runSequence(
+                'bump',
                 'build:dist',
-                'bump-version',
                 'build:docs',
                 'changelog',
                 callback

@@ -34,7 +34,7 @@
           }
         },
         preprocessors: {
-            verbose: true
+            verbose: false
         },
         browserPorts: {
             local: 8080,
@@ -47,6 +47,9 @@
                 'gulp-*', 'browser-sync', 'del', 'event-stream', 'lazypipe', 'main-bower-files',
                 'run-sequence', 'stream-series', 'uglify-save-license', 'yargs'
             ]
+        },
+        jshint: {
+            verbose: true
         },
         paths: {
             root: srcRoot,
