@@ -3,8 +3,8 @@
 
   angular
     .module('<%= module %>')
-    .config(config);
+    .run(appRun);
 
-  function config() {
+  function appRun() {
   }
 }());
