@@ -43,6 +43,16 @@ Running just the gulp command will list out all main build tasks.
 
 ```bash
 gulp
+
+Usage
+  gulp [task]
+
+Available tasks
+  build             Runs the local SPA app build.
+  build:dist        Runs the distribution SPA app build.
+  build:docs        Runs the SPA documentation build.
+  
+  ...
 ```
 
 ### Angular Generators
