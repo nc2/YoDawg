@@ -34,6 +34,27 @@ mkdir my-new-project && cd $_
 yo dawg [app-name]
 ```
 
+Once your project scaffolding has finished generating, you can build and run your site using gulp tasks.
+```bash
+gulp serve
+```
+
+Running just the gulp command will list out all main build tasks.
+
+```bash
+gulp
+
+Usage
+  gulp [task]
+
+Available tasks
+  build             Runs the local SPA app build.
+  build:dist        Runs the distribution SPA app build.
+  build:docs        Runs the SPA documentation build.
+  
+  ...
+```
+
 ### Angular Generators
 
 #### Structural
