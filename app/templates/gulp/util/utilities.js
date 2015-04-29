@@ -2,6 +2,7 @@
     'use strict';
 
     var gulp = require('gulp'),
+        glob = require("glob"),
         options = require('./options'),
         plugins = require('gulp-load-plugins')(options.loadPlugins),
         reload = plugins.browserSync.reload,
@@ -12,7 +13,7 @@
         return (isDist) ? [options.paths.dist, options.paths.docs] : options.paths.local;
     }
 
-    function onLog(title, msg) {
+    function log(title, msg) {
         console.log(
             '\r\n' +
             plugins.util.colors.green(' ' + title + ' ') + '\r\n' +
@@ -20,7 +21,15 @@
         );
     }
 
-    function onError(title, err) {
+    function viewGlob(pattern) {
+        glob(pattern, {}, function(er, files) {
+            for(var i = 0; i < files.length; i++) {
+                console.log(files[i]);
+            }
+        });
+    }
+
+    function errorHndlr(title, err) {
         console.log(
             '\r\n' +
             plugins.util.colors.white.bgRed(' ' + title + ' ') + '\r\n' +
@@ -30,8 +39,9 @@
     }
 
     module.exports = {
-        logError: onError,
-        log: onLog,
+        logError: errorHndlr,
+        log: log,
+        viewGlob: viewGlob,
         clean: function (isDist) {
             var path = rootPath(isDist);
             return gulp.src(path)
@@ -54,7 +64,7 @@
               .pipe(gulp.dest(options.paths.docs));
         },
         watch: function (isDist) {
-            var root = options.paths.root,
+            var root = options.paths.src,
                 ext = (isDist) ? ':dist' : '',
                 paths = {
                     index: root + '**/index.html',
@@ -75,7 +85,7 @@
 
             // Scripts
             plugins.watch(paths.js, function () {
-                plugins.runSequence( 'js' + ext, [ 'html' + ext, 'templates' + ext ], reload );
+                plugins.runSequence( 'js' + ext, [ 'html' + ext, 'templates' + ext ], 'test', reload );
             });
 
             // Templates

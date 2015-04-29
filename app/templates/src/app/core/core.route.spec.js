@@ -1,31 +1,40 @@
-/* jshint -W117, -W030 */
-describe('core', function() {
-    describe('state', function() {
-        var controller;
-        var views = {
-            four0four: 'app/core/404.html'
-        };
+(function() {
+    'use strict';
 
-        beforeEach(function() {
-            module('app.core', bard.fakeToastr);
-            bard.inject('$location', '$rootScope', '$state', '$templateCache');
-            $templateCache.put(views.core, '');
-        });
+    /* jshint -W117, -W030 */
+    describe('Core', function() {
+        beforeEach(module('app.core', bard.fakeToastr));
 
-        it('should map /404 route to 404 View template', function() {
-            expect($state.get('404').templateUrl).to.equal(views.four0four);
-        });
+        describe('Routing: Core', function() {
+            var fourZeroFour = {
+                expected: '404',
+                view: 'app/core/404.html',
+                route: '404'
+            };
 
-        it('of dashboard should work with $state.go', function() {
-            $state.go('404');
-            $rootScope.$apply();
-            expect($state.is('404'));
-        });
+            beforeEach(function() {
+                bard.inject(this, '$location', '$rootScope', '$state', '$templateCache');
+            });
 
-        it('should route /invalid to the otherwise (404) route', function() {
-            $location.path('/invalid');
-            $rootScope.$apply();
-            expect($state.current.templateUrl).to.equal(views.four0four);
+            beforeEach(function() {
+                $templateCache.put(fourZeroFour.view, '');
+            });
+
+            it('Should map /404 route to 404 View template', function() {
+                expect($state.get(fourZeroFour.expected).templateUrl).to.equal(fourZeroFour.view);
+            });
+
+            it('Should work with $state.go', function() {
+                $state.go(fourZeroFour.expected);
+                $rootScope.$apply();
+                expect($state.is(fourZeroFour.route));
+            });
+
+            it('should route /invalid to the otherwise (404) route', function() {
+                $location.path('/qwerty');
+                $rootScope.$apply();
+                expect($state.is(fourZeroFour.route));
+            });
         });
     });
-});
+}());

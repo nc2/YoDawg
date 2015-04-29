@@ -8,5 +8,6 @@
    */
   angular
     .module('<%= module %>', [
+        'app.core'
     ]);
 }());

@@ -165,6 +165,6 @@ $RECYCLE.BIN/
 # Downloaded Dependencies
 node_modules/
 bower_components/
-_dist/
-_local/
+_build/
 _docs/
+_report/

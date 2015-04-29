@@ -1,33 +1,24 @@
-/* jshint -W117, -W030 */
-describe('DashboardController', function() {
-    var controller;
+(function() {
+    'use strict';
 
-    beforeEach(function() {
-        bard.appModule('app.dashboard');
-        bard.inject('$controller', '$log', '$q', '$rootScope', 'dataservice');
-    });
+    /* jshint -W117, -W030 */
+    describe('Dashboard', function() {
+        beforeEach(module('app.dashboard'));
 
-    beforeEach(function () {
-        //sinon.stub(dataservice, 'getGeneratorList').returns($q.when(people));
-        controller = $controller('DashboardController');
-        $rootScope.$apply();
-    });
+        var controller;
 
-    bard.verifyNoOutstandingHttpRequests();
-
-    describe('Dashboard controller', function() {
-        it('should be created successfully', function () {
-            expect(controller).to.be.defined;
-        });
-
-        describe('after activate', function() {
-            it('should have title of Dashboard', function () {
-                expect(controller.title).to.equal('Dashboard');
+        describe('Controller: DashboardController', function() {
+            beforeEach(function() {
+                bard.inject(this, '$controller', '$rootScope');
             });
 
-            it('should have logged "Activated"', function() {
-                expect($log.info.logs).to.match(/Activated/);
+            beforeEach(function () {
+                controller = $controller('DashboardController');
+            });
+
+            it('Should be created successfully', function () {
+                expect(controller).not.to.be.null;
             });
         });
     });
-});
+}());

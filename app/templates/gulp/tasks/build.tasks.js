@@ -11,6 +11,7 @@
         appScriptBuilder = require('../util/builder.script.app'),
         vendorScriptBuilder = require('../util/builder.script.vendor'),
         stylesBuilder = require('../util/builder.styles'),
+        tests = require('../util/tests'),
         plugins = require('gulp-load-plugins')(options.loadPlugins);
 
     // TASK RUNNERS
@@ -27,12 +28,24 @@
     );
     gulp.task('serve:docs',
         'Builds the SPA documentation and starts it in BrowserSync.',
-        ['watch:docs'],
+        ['build:docs'],
         function(d) { return serve.serve(options.browserPorts.docs, options.paths.docs, d); }
     );
-    gulp.task('watch', false,      ['build'],      function() { return utilities.watch(false); });
-    gulp.task('watch:dist', false, ['build:dist'], function() { return utilities.watch(true); });
-    gulp.task('watch:docs', false, ['build:docs'], function() { return; } );
+    gulp.task('serve:coverage',
+        'Runs the tests, builds the coverage report and starts it in BrowserSync.',
+        ['test'],
+        function(d) { return serve.serve(options.browserPorts.coverage, options.paths.coverage, d); }
+    );
+    gulp.task('watch',      false, ['test:build'],      function() { return utilities.watch(false); });
+    gulp.task('watch:dist', false, ['test:build-dist'], function() { return utilities.watch(true); });
+
+    // TESTS
+    gulp.task('test',
+        'Run unit tests',
+        function (done) { tests.run(done); }
+    );
+    gulp.task('test:build',      false, ['build'],      function (done) { tests.run(done); });
+    gulp.task('test:build-dist', false, ['build:dist'], function (done) { tests.run(done); });
 
     // PROJECT BUILDERS
     gulp.task('build',

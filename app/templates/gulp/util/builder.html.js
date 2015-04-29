@@ -28,7 +28,7 @@
     module.exports = {
         html: function(isDist) {
             var dest = rootPath(isDist),
-                path = options.paths.root + 'index.html';
+                path = options.paths.src + 'index.html';
 
             return gulp.src(path)
                 .pipe(pipes.tools.plumber())

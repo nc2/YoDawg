@@ -1,30 +1,38 @@
-/* jshint -W117, -W030 */
-describe('admin routes', function () {
-    describe('state', function () {
-        var controller;
-        var view = 'app/admin/admin.html';
+(function() {
+    'use strict';
 
-        beforeEach(function() {
-            module('app.admin', bard.fakeToastr);
-            bard.inject('$httpBackend', '$location', '$rootScope', '$state', '$templateCache');
-        });
+    /* jshint -W117, -W030 */
+    describe('Admin', function () {
+        beforeEach(module('app.admin', bard.fakeToastr));
 
-        beforeEach(function() {
-            $templateCache.put(view, '');
-        });
+        describe('Routing: Admin', function () {
+            var admin = {
+                expected: 'admin',
+                view: 'app/admin/admin.html',
+                route: '#/admin'
+            }
 
-        it('should map state admin to url /admin ', function() {
-            expect($state.href('admin', {})).to.equal('/admin');
-        });
+            beforeEach(function() {
+                bard.inject(this, '$httpBackend', '$location', '$rootScope', '$state', '$templateCache');
+            });
 
-        it('should map /admin route to admin View template', function () {
-            expect($state.get('admin').templateUrl).to.equal(view);
-        });
+            beforeEach(function() {
+                $templateCache.put(admin.view, '');
+            });
 
-        it('of admin should work with $state.go', function () {
-            $state.go('admin');
-            $rootScope.$apply();
-            expect($state.is('admin'));
+            it('Should map state admin to url "/admin" ', function() {
+                expect($state.href(admin.expected, {})).to.equal(admin.route);
+            });
+
+            it('Should map "/admin" route to admin View template', function () {
+                expect($state.get(admin.expected).templateUrl).to.equal(admin.view);
+            });
+
+            it('Should work with $state.go', function () {
+                $state.go(admin.expected);
+                $rootScope.$apply();
+                expect($state.is(admin.route));
+            });
         });
     });
-});
+}());

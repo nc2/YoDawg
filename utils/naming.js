@@ -12,6 +12,10 @@ exports.lowerCamelName = function lowerCamelName (name) {
   return _.camelize(_.slugify(_.humanize(name)));
 };
 
+exports.rootName = function rootName (name) {
+  return exports.upperName(exports.stripNamespace(name));
+};
+
 exports.upperName = function upperName (name) {
   return _.classify(_.slugify(_.humanize(name)));
 };

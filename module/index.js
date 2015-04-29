@@ -23,6 +23,8 @@ Generator.prototype.writing = function writing () {
     // create module and routes file
     this.createCodeFile('module', scriptExtension);
     this.createCodeFile('routes', scriptExtension);
+    this.createCodeFile('view', 'html');
+    this.createUnitTest('routes', scriptExtension);
 
     // update {index,app}.js with dependency on this module
     var rootModule = findAppModule(this.appPath, ['index', 'app']);

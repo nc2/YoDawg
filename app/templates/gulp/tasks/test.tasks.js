@@ -2,8 +2,8 @@
     'use strict';
 
     var gulp = require('gulp-help')(require('gulp'), { description: 'Display this help text.', aliases: ['?', 'h'] }),
-        karma = require('karma').server,
         options = require('../util/options'),
+        tests = require('../util/tests'),
         plugins = require('gulp-load-plugins')(options.loadPlugins);
 
     // for full documentation of gulp-protractor,
@@ -23,7 +23,8 @@
     // runs build-e2e task
     // then runs end to end tasks
     // using Protractor: http://angular.github.io/protractor/
-    gulp.task('e2e', 'Performs end to end script testing.',
+    gulp.task('e2e',
+        'Performs end to end script testing.',
         ['webdriver_update', 'build-e2e'],
         function(cb) {
             return gulp.src(options.paths.e2eDist + "/*.js")
@@ -31,29 +32,6 @@
                     configFile: "protractor.conf.js",
                     args: ['--baseUrl', 'http://127.0.0.1:9000']
                 })).on('error', function(e) { throw e; });
-        }
-    );
-
-    gulp.task('test',
-        'Run tests once and exit',
-        function (done) {
-            karma.start({
-                configFile: '../karma.config.js',
-                singleRun: true
-            }, function(e) {
-                done();
-            });
-        }
-    );
-
-    gulp.task('test:serve',
-        'Watch for file changes and re-run tests on each change',
-        function (done) {
-            karma.start({
-                configFile: '../karma.config.js'
-            }, function(e) {
-                done();
-            });
         }
     );
 })();

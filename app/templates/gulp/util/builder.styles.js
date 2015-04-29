@@ -36,14 +36,14 @@
             var dest = rootPath(isDist),
                 mainFilter = plugins.filter('**/main.scss'),
                 sassFilter = plugins.filter('**/*.{scss,sass}'),
-                partials = gulp.src(options.paths.app + '**/_*.{scss,sass}', { base: options.paths.root });
+                partials = gulp.src(options.paths.app + '**/_*.{scss,sass}', { base: options.paths.src });
 
             return plugins.streamSeries(
                     // Order matters
                     gulp.src(bowerStyles(), { base: './' }), // Include the bower_components folder in dest
-                    gulp.src(options.paths.vendor + '**/*.{scss,sass,css}', { base: options.paths.root }),
-                    gulp.src(options.paths.assets + '**/*.{scss,sass,css}', { base: options.paths.root }),
-                    gulp.src(options.paths.app + '**/*.{scss,sass,css}', { base: options.paths.root })
+                    gulp.src(options.paths.vendor + '**/*.{scss,sass,css}', { base: options.paths.src }),
+                    gulp.src(options.paths.assets + '**/*.{scss,sass,css}', { base: options.paths.src }),
+                    gulp.src(options.paths.app + '**/*.{scss,sass,css}', { base: options.paths.src })
                 )
                 .pipe(pipes.tools.plumber())
 

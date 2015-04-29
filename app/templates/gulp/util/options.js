@@ -1,7 +1,8 @@
 (function() {
     'use strict';
 
-    var srcRoot = '<%= srcDir %>/',
+    var root = __dirname + '/../..',
+        srcRoot = '<%= srcDir %>/',
         appRoot = '<%= appDir %>/',
         assetRoot = '<%= assetDir %>/',
         bowerRoot = 'bower_components/',
@@ -39,20 +40,22 @@
         browserPorts: {
             local: 8080,
             dist: 8081,
-            docs: 8082
+            docs: 8082,
+            coverage: 8083
         },
         loadPlugins: {
             lazy: false,
             pattern: [
-                'gulp-*', 'browser-sync', 'del', 'event-stream', 'lazypipe', 'main-bower-files',
-                'run-sequence', 'stream-series', 'uglify-save-license', 'yargs'
+                'gulp-*', 'browser-sync', 'del', 'event-stream', 'lazypipe', 'karma', 'main-bower-files',
+                'run-sequence', 'stream-series', 'uglify-save-license', 'wiredep', 'yargs'
             ]
         },
         jshint: {
             verbose: true
         },
         paths: {
-            root: srcRoot,
+            root: root,
+            src: srcRoot,
             app: appRoot,
             assets: assetRoot,
             bower: bowerRoot,
@@ -76,9 +79,8 @@
             dist: '_build/',
             local: '_build/',
             docs: '_docs/', // Uses YUI-Doc:  http://yui.github.io/yuidoc/
-            e2e: 'e2e/',
-            e2eSrc: 'test/e2e/src/*.js',
-            e2eDist: 'test/e2e/dist/'
+            coverage: '_report/report-html/',
+            testSpecs: [srcRoot + '/**/*.spec.js']
         }
     };
 })();

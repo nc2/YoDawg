@@ -1,17 +1,30 @@
-/*global describe, beforeEach, it, expect, inject, module*/
-'use strict';
+(function() {
+    'use strict';
 
-describe('<%= utils.upperName(name) %>', function () {
-  var scope;
+    /*global describe, beforeEach, it, expect, inject, module*/
+    describe('<%= utils.rootName(module) %>', function () {
+        beforeEach(module('<%= module %>'));
 
-  beforeEach(module('<%= utils.upperName(name) %>'));
+        var controller,
+            scope;
 
-  beforeEach(inject(function ($rootScope, $controller) {
-    scope = $rootScope.$new();
-    $controller('<%= utils.upperName(name) %>', {$scope: scope});
-  }));
+        describe('Controller: <%= utils.upperName(name) %>', function() {
+            beforeEach(function() {
+                bard.inject(this, '$controller', '$rootScope');
+            });
 
-  it('should have ctrlName as <%= utils.upperName(name) %>', function () {
-    expect(scope.<%= utils.lowerCamelName(name) %>.ctrlName).toEqual('<%= utils.upperName(name) %>');
-  });
-});
+            beforeEach(function () {
+                scope = $rootScope.$new();
+                controller = $controller('<%= utils.upperName(name) %>', {$scope: scope });
+            });
+
+            it('Should be created successfully', function () {
+                expect(controller).not.to.be.null;
+            });
+
+            it('Should have ctrlName as <%= utils.upperName(name) %>', function () {
+              expect(controller.<%= utils.lowerCamelName(name) %>.ctrlName).to.equal('<%= utils.upperName(name) %>');
+            });
+        });
+    });
+}());

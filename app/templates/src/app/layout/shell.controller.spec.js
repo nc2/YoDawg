@@ -1,23 +1,25 @@
-/* jshint -W117, -W030 */
-describe('ShellController', function() {
-    var controller;
+(function() {
+    'use strict';
 
-    beforeEach(function() {
-        bard.appModule('app.layout');
-        bard.inject('$controller', '$q', '$rootScope', '$timeout', 'dataservice');
-    });
+    /* jshint -W117, -W030 */
+    describe('Layout', function() {
+        beforeEach(module('app.layout'));
 
-    beforeEach(function () {
-        controller = $controller('ShellController');
-        $rootScope.$apply();
-    });
+        var controller,
+            scope;
 
-    bard.verifyNoOutstandingHttpRequests();
+        describe('Controller: ShellController', function() {
+            beforeEach(function() {
+                bard.inject(this, '$controller', '$rootScope');
+            });
 
-    describe('Shell controller', function() {
-        it('should be created successfully', function () {
-            expect(controller).to.be.defined;
+            beforeEach(function () {
+                controller = $controller('ShellController', {$scope: $rootScope.$new() });
+            });
+
+            it('Should be created successfully', function () {
+                expect(controller).not.to.be.null;
+            });
         });
-
     });
-});
+}());

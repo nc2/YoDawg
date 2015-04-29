@@ -1,32 +1,37 @@
 /* jshint -W117, -W030 */
-describe('dashboard routes', function () {
-    describe('state', function () {
-        var controller;
-        var view = 'app/dashboard/dashboard.html';
+describe('Dashboard', function () {
+    describe('Dashboard: Routing', function () {
+        var controller,
+        dashboard = {
+            expected: 'dashboard',
+            view: 'app/dashboard/dashboard.html',
+            route: '#/'
+        };
+
+        beforeEach(module('app.dashboard', bard.fakeToastr));
 
         beforeEach(function() {
-            module('app.dashboard', bard.fakeToastr);
             bard.inject('$httpBackend', '$location', '$rootScope', '$state', '$templateCache');
         });
 
         beforeEach(function() {
-            $templateCache.put(view, '');
+            $templateCache.put(dashboard.view, '');
         });
 
         bard.verifyNoOutstandingHttpRequests();
 
-        it('should map state dashboard to url / ', function() {
-            expect($state.href('dashboard', {})).to.equal('/');
+        it('Should map state dashboard to url / ', function() {
+            expect($state.href(dashboard.expected, {})).to.equal(dashboard.route);
         });
 
-        it('should map /dashboard route to dashboard View template', function () {
-            expect($state.get('dashboard').templateUrl).to.equal(view);
+        it('Should map /dashboard route to dashboard View template', function () {
+            expect($state.get(dashboard.expected).templateUrl).to.equal(dashboard.view);
         });
 
-        it('of dashboard should work with $state.go', function () {
-            $state.go('dashboard');
+        it('Should work with $state.go', function () {
+            $state.go(dashboard.expected);
             $rootScope.$apply();
-            expect($state.is('dashboard'));
+            expect($state.is(dashboard.route));
         });
     });
 });
