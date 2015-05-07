@@ -3,22 +3,15 @@
 
     /* jshint -W117, -W030 */
     describe('Admin', function () {
-        beforeEach(module('app.admin', bard.fakeToastr));
+        var admin = {
+            expected: 'admin',
+            view: 'app/admin/admin.html',
+            route: '#/admin'
+        }
 
         describe('Routing: Admin', function () {
-            var admin = {
-                expected: 'admin',
-                view: 'app/admin/admin.html',
-                route: '#/admin'
-            }
-
-            beforeEach(function() {
-                bard.inject(this, '$httpBackend', '$location', '$rootScope', '$state', '$templateCache');
-            });
-
-            beforeEach(function() {
-                $templateCache.put(admin.view, '');
-            });
+            beforeEach(module('app.admin', bard.fakeToastr));
+            beforeEach(setup);
 
             it('Should map state admin to url "/admin" ', function() {
                 expect($state.href(admin.expected, {})).to.equal(admin.route);
@@ -34,5 +27,10 @@
                 expect($state.is(admin.route));
             });
         });
+
+        function setup() {
+            bard.inject(this, '$httpBackend', '$location', '$rootScope', '$state', '$templateCache');
+            $templateCache.put(admin.view, '');
+        }
     });
 }());

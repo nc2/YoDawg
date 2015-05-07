@@ -3,22 +3,15 @@
 
     /* jshint -W117, -W030 */
     describe('<%= utils.rootName(module) %>', function () {
-        beforeEach(module('<%= module %>', bard.fakeToastr));
+        var route = {
+            expected: '<%= utils.lowerCamelName(utils.rootName(module)) %>',
+            view: 'app/<%= utils.lowerCamelName(utils.rootName(module)) %>/<%= utils.lowerCamelName(utils.rootName(module)) %>.view.html',
+            route: '#/<%= utils.lowerCamelName(utils.rootName(module)) %>'
+        }
 
         describe('Routing: <%= utils.upperName(utils.rootName(module)) %>', function () {
-            var route = {
-                expected: '<%= utils.lowerCamelName(utils.rootName(module)) %>',
-                view: 'app/<%= utils.lowerCamelName(utils.rootName(module)) %>/<%= utils.lowerCamelName(utils.rootName(module)) %>.view.html',
-                route: '#/<%= utils.lowerCamelName(utils.rootName(module)) %>'
-            }
-
-            beforeEach(function() {
-                bard.inject(this, '$httpBackend', '$location', '$rootScope', '$state', '$templateCache');
-            });
-
-            beforeEach(function() {
-                $templateCache.put(route.view, '');
-            });
+            beforeEach(module('<%= module %>', bard.fakeToastr));
+            beforeEach(setup);
 
             it('Should map state <%= utils.lowerCamelName(utils.rootName(module)) %> to url "/<%= utils.lowerCamelName(utils.rootName(module)) %>" ', function() {
                 expect($state.href(route.expected, {})).to.equal(route.route);
@@ -34,5 +27,10 @@
                 expect($state.is(route.route));
             });
         });
+
+        function setup() {
+            bard.inject(this, '$httpBackend', '$location', '$rootScope', '$state', '$templateCache');
+            $templateCache.put(route.view, '');
+        }
     });
 }());
