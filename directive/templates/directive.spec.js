@@ -2,19 +2,31 @@
     'use strict';
 
     /*global describe, beforeEach, it, expect, inject, module*/
-    describe('<%= utils.lowerCamelName(name) %>', function () {
-        var scope, element;
+    describe('<%= utils.rootName(module) %>',function () {
+        var markup,
+            element,
+            scope;
 
-        beforeEach(module('<%= module %>', '<%= templateUrl %>'));
+        describe('Directive: <%= utils.hyphenName(name) %>', function () {
+            beforeEach(module('<%= module %>'));
+            beforeEach(setup);
 
-        beforeEach(inject(function ($compile, $rootScope) {
-            scope = $rootScope.$new();
-            element = $compile(angular.element('<<%= utils.hyphenName(name) %>></<%= utils.hyphenName(name) %>>'))(scope);
-        }));
+            beforeEach(function () {
+                scope = $rootScope.$new();
+                element = $compile(angular.element(markup))(scope);
+                scope.$digest();
+            });
 
-        it('should have correct text', function () {
-            scope.$apply();
-            expect(element.isolateScope().<%= utils.lowerCamelName(name) %>.name).toEqual('<%= utils.lowerCamelName(name) %>');
+            it('Should have correct text', function () {
+                scope.$apply();
+                expect(element.length).to.equal(1);
+            });
         });
+
+        function setup() {
+            bard.inject(this, '$compile', '$rootScope', '$templateCache');
+            markup = '<<%= utils.hyphenName(name) %>></<%= utils.hyphenName(name) %>>';
+            $templateCache.put('<%= templateUrl %>', '');
+        }
     });
 }());

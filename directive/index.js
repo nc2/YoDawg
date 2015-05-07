@@ -17,8 +17,8 @@
 
   Generator.prototype.writing = function writing () {
       // assign a template url
-      this.templateUrl = this.moduleDir(this.module) + '/' + utils.hyphenName(this.name) + '.html';
-      this.createSimpleFile('directive', 'html');
+      this.templateUrl = this.moduleDir(this.module) + '/' + utils.lowerCamelName(utils.rootName(this.module)) + '.directive.html';
+      this.createCodeFile('directive', 'html');
       this.createCodeFile('directive', 'js');
       this.createUnitTest('directive', 'js');
   };

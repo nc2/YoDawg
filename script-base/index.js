@@ -50,7 +50,7 @@ Generator.prototype.moduleDir = function moduleDir (module) {
 
   return _.reduce(parts, function (agg, p) {
     return path.join(agg, p);
-  }, '');
+  }, '').replace('\\', '/');
 };
 
 Generator.prototype.modulePath = function modulePath (filename) {
