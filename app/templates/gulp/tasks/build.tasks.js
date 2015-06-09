@@ -79,8 +79,8 @@
     );
 
     // UTILITIES
-    gulp.task('clean', false,      function() { return utilities.clean(false); });
-    gulp.task('clean:dist', false, function() { return utilities.clean(true); });
+    gulp.task('clean', false,      function(cb) { return utilities.clean(false, cb); });
+    gulp.task('clean:dist', false, function(cb) { return utilities.clean(true, cb); });
 
     // SCRIPT BUILDERS
     gulp.task('js',

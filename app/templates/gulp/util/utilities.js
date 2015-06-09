@@ -2,7 +2,7 @@
     'use strict';
 
     var gulp = require('gulp'),
-        glob = require("glob"),
+        glob = require('glob'),
         options = require('./options'),
         plugins = require('gulp-load-plugins')(options.loadPlugins),
         reload = plugins.browserSync.reload,
@@ -42,20 +42,15 @@
         logError: errorHndlr,
         log: log,
         viewGlob: viewGlob,
-        clean: function (isDist) {
-            var path = rootPath(isDist);
-            return gulp.src(path)
-                .pipe(plugins.plumber(function(err) {
-                    onError('[clean]', err);
-                    this.emit('end');
-                }))
-                .pipe(vinylPaths(del));
+        clean: function (isDist, cb) {
+            var path = rootPath(isDist) + '/**/*.*';
+            del(path, {force: true}, cb);
         },
         gendocs: function () {
             var path = options.paths.app + '**/*.js';
             return gulp.src(path)
               .pipe(plugins.plumber(function(err) {
-                  onError('[gendocs]', err);
+                  errorHndlr('[gendocs]', err);
                   this.emit('end');
               }))
               .pipe(plugins.yuidoc.parser())
